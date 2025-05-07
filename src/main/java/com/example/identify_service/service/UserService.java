@@ -8,6 +8,7 @@ import com.example.identify_service.enums.Role;
 import com.example.identify_service.exception.AppException;
 import com.example.identify_service.exception.ErrorCode;
 import com.example.identify_service.mapper.UserMapper;
+import com.example.identify_service.repository.RoleRepository;
 import com.example.identify_service.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,10 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
     UserMapper userMapper;
+    RoleRepository roleRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_DATA')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -59,7 +62,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+//        user.setRoles(roles);
         return userMapper.toUserReponse(userRepository.save(user));
     }
 
@@ -67,9 +70,10 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RuntimeException("User not found")
         );
-
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
         return userMapper.toUserReponse(userRepository.save(user));
     }
 

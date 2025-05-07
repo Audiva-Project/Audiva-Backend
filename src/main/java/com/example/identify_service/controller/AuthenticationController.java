@@ -3,6 +3,7 @@ package com.example.identify_service.controller;
 import com.example.identify_service.dto.request.ApiResponse;
 import com.example.identify_service.dto.request.AuthenticationRequest;
 import com.example.identify_service.dto.request.IntrospectRequest;
+import com.example.identify_service.dto.request.LogoutRequest;
 import com.example.identify_service.dto.response.AuthenticationResponse;
 import com.example.identify_service.dto.response.IntrospectResponse;
 import com.example.identify_service.service.AuthenticationService;
@@ -35,5 +36,12 @@ public class AuthenticationController {
     public ApiResponse<IntrospectResponse> verify(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder().result(result).build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+
+        return ApiResponse.<Void>builder().build();
     }
 }

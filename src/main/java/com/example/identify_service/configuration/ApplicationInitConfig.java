@@ -28,9 +28,9 @@ public class ApplicationInitConfig {
             if (userRepository.findByUsername("admin").isEmpty()) {
                 HashSet<String> roles = new HashSet<>();
                 roles.add(Role.ADMIN.name());
-                User user = User.builder().username("admin").password(passwordEncoder.encode("admin")).roles(roles).build();
-
-                userRepository.save(user);
+//                User user = User.builder().username("admin").password(passwordEncoder.encode("admin")).roles(roles).build();
+//
+//                userRepository.save(user);
                 log.warn("admin user has bean created with password: admin");
             }
         };
