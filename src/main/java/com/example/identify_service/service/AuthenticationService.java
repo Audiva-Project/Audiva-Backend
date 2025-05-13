@@ -3,6 +3,7 @@ package com.example.identify_service.service;
 import com.example.identify_service.dto.request.AuthenticationRequest;
 import com.example.identify_service.dto.request.IntrospectRequest;
 import com.example.identify_service.dto.request.LogoutRequest;
+import com.example.identify_service.dto.request.RefreshRequest;
 import com.example.identify_service.dto.response.AuthenticationResponse;
 import com.example.identify_service.dto.response.IntrospectResponse;
 import com.example.identify_service.entity.InvalidatedToken;
@@ -53,7 +54,7 @@ public class AuthenticationService {
 
         try {
             verifyToken(token);
-        } catch (AppException e) {
+        } catch (Exception e) {
             isValid = false;
         }
 
@@ -87,7 +88,7 @@ public class AuthenticationService {
         invalidatedTokenRepository.save(invalidatedToken);
     }
 
-    private SignedJWT verifyToken(String token) throws JOSEException, ParseException {
+    public SignedJWT verifyToken(String token) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
         SignedJWT signedJWT = SignedJWT.parse(token);
@@ -105,6 +106,30 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHORIZED);
 
         return signedJWT;
+    }
+
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(request.getToken());
+
+        String jti = signedJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jti)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        var username = signedJWT.getJWTClaimsSet().getSubject();
+
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        return AuthenticationResponse.builder()
+                .token(generateToken(user))
+                .authenticated(true)
+                .build();
     }
 
     public String generateToken(User user) {
@@ -146,5 +171,4 @@ public class AuthenticationService {
 
         return stringJoiner.toString();
     }
-
 }

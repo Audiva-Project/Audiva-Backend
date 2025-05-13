@@ -1,5 +1,6 @@
 package com.example.identify_service.configuration;
 
+import com.example.identify_service.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +26,11 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${jwt.signerKey}")
-    private String signerKey;
+    @Autowired
+    UserDetailsServiceImpl userService;
 
     @Autowired
-    private CustomJwtDecoder customJwtDecoder;
+    CustomJwtDecoder customJwtDecoder;
 
     private final String[] PUBLIC_MATCHERS = {"/users", "/auth/*"};
 

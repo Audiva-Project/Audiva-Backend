@@ -9,7 +9,9 @@ import com.example.identify_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiResponse<List<User>> getAll() {
+    public ApiResponse<List<User>> getAll(@AuthenticationPrincipal UserDetails userDetails) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         log.info(authentication.getName());
