@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
             if (StringUtils.hasText(jwt)) {
-                SignedJWT signedJWT = authenticationService.verifyToken(jwt);
+                SignedJWT signedJWT = authenticationService.verifyToken(jwt, false);
                 String userName = signedJWT.getJWTClaimsSet().getSubject();
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
