@@ -1,11 +1,11 @@
-package com.example.identify_service.controller;
+package com.example.audiva.controller;
 
-import com.example.identify_service.dto.request.ApiResponse;
-import com.example.identify_service.dto.request.UserCreationRequest;
-import com.example.identify_service.dto.request.UserUpdateRequest;
-import com.example.identify_service.dto.response.UserReponse;
-import com.example.identify_service.entity.User;
-import com.example.identify_service.service.UserService;
+import com.example.audiva.dto.request.ApiResponse;
+import com.example.audiva.dto.request.UserCreationRequest;
+import com.example.audiva.dto.request.UserUpdateRequest;
+import com.example.audiva.dto.response.UserReponse;
+import com.example.audiva.entity.User;
+import com.example.audiva.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

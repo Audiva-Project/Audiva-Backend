@@ -1,4 +1,4 @@
-package com.example.identify_service.exception;
+package com.example.audiva.exception;
 
 public class AppException extends RuntimeException {
 

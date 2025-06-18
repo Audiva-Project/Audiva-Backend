@@ -1,10 +1,10 @@
-package com.example.identify_service.service;
+package com.example.audiva.service;
 
-import com.example.identify_service.entity.Role;
-import com.example.identify_service.entity.User;
-import com.example.identify_service.exception.AppException;
-import com.example.identify_service.exception.ErrorCode;
-import com.example.identify_service.repository.UserRepository;
+import com.example.audiva.entity.Role;
+import com.example.audiva.entity.User;
+import com.example.audiva.exception.AppException;
+import com.example.audiva.exception.ErrorCode;
+import com.example.audiva.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

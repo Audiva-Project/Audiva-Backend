@@ -1,15 +1,15 @@
-package com.example.identify_service.service;
+package com.example.audiva.service;
 
-import com.example.identify_service.dto.request.UserCreationRequest;
-import com.example.identify_service.dto.request.UserUpdateRequest;
-import com.example.identify_service.dto.response.UserReponse;
-import com.example.identify_service.entity.User;
-import com.example.identify_service.enums.Role;
-import com.example.identify_service.exception.AppException;
-import com.example.identify_service.exception.ErrorCode;
-import com.example.identify_service.mapper.UserMapper;
-import com.example.identify_service.repository.RoleRepository;
-import com.example.identify_service.repository.UserRepository;
+import com.example.audiva.dto.request.UserCreationRequest;
+import com.example.audiva.dto.request.UserUpdateRequest;
+import com.example.audiva.dto.response.UserReponse;
+import com.example.audiva.entity.User;
+import com.example.audiva.enums.Role;
+import com.example.audiva.exception.AppException;
+import com.example.audiva.exception.ErrorCode;
+import com.example.audiva.mapper.UserMapper;
+import com.example.audiva.repository.RoleRepository;
+import com.example.audiva.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

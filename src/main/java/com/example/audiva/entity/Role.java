@@ -1,4 +1,4 @@
-package com.example.identify_service.entity;
+package com.example.audiva.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

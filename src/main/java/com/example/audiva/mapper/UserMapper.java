@@ -1,9 +1,9 @@
-package com.example.identify_service.mapper;
+package com.example.audiva.mapper;
 
-import com.example.identify_service.dto.request.UserCreationRequest;
-import com.example.identify_service.dto.request.UserUpdateRequest;
-import com.example.identify_service.dto.response.UserReponse;
-import com.example.identify_service.entity.User;
+import com.example.audiva.dto.request.UserCreationRequest;
+import com.example.audiva.dto.request.UserUpdateRequest;
+import com.example.audiva.dto.response.UserReponse;
+import com.example.audiva.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

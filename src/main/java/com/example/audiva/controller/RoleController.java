@@ -1,9 +1,9 @@
-package com.example.identify_service.controller;
+package com.example.audiva.controller;
 
-import com.example.identify_service.dto.request.ApiResponse;
-import com.example.identify_service.dto.request.RoleRequest;
-import com.example.identify_service.dto.response.RoleResponse;
-import com.example.identify_service.service.RoleService;
+import com.example.audiva.dto.request.ApiResponse;
+import com.example.audiva.dto.request.RoleRequest;
+import com.example.audiva.dto.response.RoleResponse;
+import com.example.audiva.service.RoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
