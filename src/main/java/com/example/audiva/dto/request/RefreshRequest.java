@@ -1,4 +1,4 @@
-package com.example.identify_service.dto.request;
+package com.example.audiva.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

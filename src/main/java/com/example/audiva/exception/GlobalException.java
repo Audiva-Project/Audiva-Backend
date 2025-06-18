@@ -1,6 +1,6 @@
-package com.example.identify_service.exception;
+package com.example.audiva.exception;
 
-import com.example.identify_service.dto.request.ApiResponse;
+import com.example.audiva.dto.request.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

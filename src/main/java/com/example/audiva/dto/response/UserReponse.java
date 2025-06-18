@@ -1,6 +1,5 @@
-package com.example.identify_service.dto.response;
+package com.example.audiva.dto.response;
 
-import com.example.identify_service.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

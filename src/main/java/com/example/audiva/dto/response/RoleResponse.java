@@ -1,6 +1,6 @@
-package com.example.identify_service.dto.response;
+package com.example.audiva.dto.response;
 
-import com.example.identify_service.entity.Permission;
+import com.example.audiva.entity.Permission;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

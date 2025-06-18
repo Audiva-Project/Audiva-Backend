@@ -1,9 +1,9 @@
-package com.example.identify_service.controller;
+package com.example.audiva.controller;
 
-import com.example.identify_service.dto.request.*;
-import com.example.identify_service.dto.response.AuthenticationResponse;
-import com.example.identify_service.dto.response.IntrospectResponse;
-import com.example.identify_service.service.AuthenticationService;
+import com.example.audiva.dto.request.*;
+import com.example.audiva.dto.response.AuthenticationResponse;
+import com.example.audiva.dto.response.IntrospectResponse;
+import com.example.audiva.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

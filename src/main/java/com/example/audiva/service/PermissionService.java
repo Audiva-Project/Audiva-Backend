@@ -1,12 +1,10 @@
-package com.example.identify_service.service;
+package com.example.audiva.service;
 
-import com.example.identify_service.dto.request.PermissionRequest;
-import com.example.identify_service.dto.response.PermissionResponse;
-import com.example.identify_service.entity.Permission;
-import com.example.identify_service.exception.AppException;
-import com.example.identify_service.exception.ErrorCode;
-import com.example.identify_service.mapper.PermissionMapper;
-import com.example.identify_service.repository.PermissionRepository;
+import com.example.audiva.dto.request.PermissionRequest;
+import com.example.audiva.dto.response.PermissionResponse;
+import com.example.audiva.entity.Permission;
+import com.example.audiva.mapper.PermissionMapper;
+import com.example.audiva.repository.PermissionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

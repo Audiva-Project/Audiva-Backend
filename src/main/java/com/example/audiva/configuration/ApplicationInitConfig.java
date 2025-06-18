@@ -1,8 +1,7 @@
-package com.example.identify_service.configuration;
+package com.example.audiva.configuration;
 
-import com.example.identify_service.entity.User;
-import com.example.identify_service.enums.Role;
-import com.example.identify_service.repository.UserRepository;
+import com.example.audiva.enums.Role;
+import com.example.audiva.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

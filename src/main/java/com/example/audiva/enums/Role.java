@@ -1,4 +1,4 @@
-package com.example.identify_service.enums;
+package com.example.audiva.enums;
 
 public enum Role {
     ADMIN,
