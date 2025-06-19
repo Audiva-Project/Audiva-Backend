@@ -1,7 +1,7 @@
-package com.example.identify_service.configuration;
+package com.example.audiva.configuration;
 
-import com.example.identify_service.dto.request.IntrospectRequest;
-import com.example.identify_service.service.AuthenticationService;
+import com.example.audiva.dto.request.IntrospectRequest;
+import com.example.audiva.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

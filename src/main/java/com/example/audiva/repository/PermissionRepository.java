@@ -1,6 +1,6 @@
-package com.example.identify_service.repository;
+package com.example.audiva.repository;
 
-import com.example.identify_service.entity.Permission;
+import com.example.audiva.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

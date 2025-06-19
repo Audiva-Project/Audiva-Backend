@@ -1,8 +1,8 @@
-package com.example.identify_service.mapper;
+package com.example.audiva.mapper;
 
-import com.example.identify_service.dto.request.PermissionRequest;
-import com.example.identify_service.dto.response.PermissionResponse;
-import com.example.identify_service.entity.Permission;
+import com.example.audiva.dto.request.PermissionRequest;
+import com.example.audiva.dto.response.PermissionResponse;
+import com.example.audiva.entity.Permission;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,7 +1,7 @@
-package com.example.identify_service.configuration;
+package com.example.audiva.configuration;
 
-import com.example.identify_service.service.AuthenticationService;
-import com.example.identify_service.service.UserDetailsServiceImpl;
+import com.example.audiva.service.AuthenticationService;
+import com.example.audiva.service.UserDetailsServiceImpl;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,7 +1,7 @@
-package com.example.identify_service.configuration;
+package com.example.audiva.configuration;
 
-import com.example.identify_service.dto.request.ApiResponse;
-import com.example.identify_service.exception.ErrorCode;
+import com.example.audiva.dto.request.ApiResponse;
+import com.example.audiva.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

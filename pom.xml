@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>identify-service</artifactId>
+    <artifactId>audiva</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>identify-service</name>
+    <name>audiva</name>
     <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>

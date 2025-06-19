@@ -1,9 +1,9 @@
-package com.example.identify_service.controller;
+package com.example.audiva.controller;
 
-import com.example.identify_service.dto.request.ApiResponse;
-import com.example.identify_service.dto.request.PermissionRequest;
-import com.example.identify_service.dto.response.PermissionResponse;
-import com.example.identify_service.service.PermissionService;
+import com.example.audiva.dto.request.ApiResponse;
+import com.example.audiva.dto.request.PermissionRequest;
+import com.example.audiva.dto.response.PermissionResponse;
+import com.example.audiva.service.PermissionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

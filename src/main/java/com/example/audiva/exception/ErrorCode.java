@@ -1,4 +1,4 @@
-package com.example.identify_service.exception;
+package com.example.audiva.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

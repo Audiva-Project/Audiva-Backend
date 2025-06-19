@@ -1,4 +1,4 @@
-package com.example.identify_service.entity;
+package com.example.audiva.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +23,7 @@ public class User {
     String firstName;
     String lastName;
     LocalDate dob;
-    
+
     @ManyToMany
     Set<Role> roles;
 }
