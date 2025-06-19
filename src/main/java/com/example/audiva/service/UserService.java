@@ -10,6 +10,7 @@ import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.UserMapper;
 import com.example.audiva.repository.RoleRepository;
 import com.example.audiva.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +35,7 @@ public class UserService {
     RoleRepository roleRepository;
 
     //    @PreAuthorize("hasRole('ADMIN')")
-    @PreAuthorize("hasAuthority('CREATE_DATA')")
+//    @PreAuthorize("hasAuthority('CREATE_DATA')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
