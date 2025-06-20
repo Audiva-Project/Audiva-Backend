@@ -28,6 +28,6 @@ public class FavoriteSong extends BaseEntity {
 @Embeddable
 @Data
 class FavoriteSongId implements Serializable {
-    private Long userId;
+    private String userId;
     private Long songId;
 }
