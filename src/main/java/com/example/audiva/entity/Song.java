@@ -19,9 +19,6 @@ public class Song extends BaseEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "article")
-    private Long article;
-
     @Column(name = "genre")
     private String genre;
 
@@ -49,4 +46,12 @@ public class Song extends BaseEntity {
 
     @OneToMany(mappedBy = "song")
     private List<PlaylistSong> playlistSongs;
+
+    @ManyToMany
+    @JoinTable(
+            name = "song_artist",
+            joinColumns = @JoinColumn(name = "song_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private List<Artist> artists;
 }

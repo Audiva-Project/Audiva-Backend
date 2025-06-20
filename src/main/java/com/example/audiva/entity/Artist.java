@@ -23,4 +23,7 @@ public class Artist extends BaseEntity {
 
     @OneToMany(mappedBy = "artist")
     private List<Album> albums;
+
+    @ManyToMany(mappedBy = "artists")
+    private List<Song> songs;
 }
