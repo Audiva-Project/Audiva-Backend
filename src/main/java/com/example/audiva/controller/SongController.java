@@ -25,7 +25,7 @@ public class SongController {
         return ResponseEntity.ok(songService.getSongById(id));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     public ResponseEntity<Song> createSong (@RequestBody Song song) {
         return ResponseEntity.ok(songService.createSong(song));
     }
