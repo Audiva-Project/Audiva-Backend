@@ -19,14 +19,11 @@ public class Album extends BaseEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "article")
-    private Long article;
+    @Column (name = "thumbnail_url")
+    private String thumbnailUrl;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
-
-    @Column(name = "case_id")
-    private String caseId;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
