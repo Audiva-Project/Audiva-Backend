@@ -20,11 +20,11 @@ public enum ErrorCode {
     ARTIST_NOT_FOUND(1012, "Artist not found", HttpStatus.NOT_FOUND),
     ARTIST_HAS_SONGS(1013, "Artist has songs, cannot delete", HttpStatus.BAD_REQUEST),
     INVALID_SEARCH_TERM(1014, "Invalid search term", HttpStatus.BAD_REQUEST),
-    INVALID_ARTIST_NAME(1015, "Artist name is required", HttpStatus.BAD_REQUEST);
+    INVALID_ARTIST_NAME(1015, "Artist name is required", HttpStatus.BAD_REQUEST),
 
     // SONG Error code
-    SONG_EXISTED(1010, "", HttpStatus.BAD_REQUEST);
-    ;
+    SONG_EXISTED(1016, "Song existed", HttpStatus.BAD_REQUEST);
+
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
