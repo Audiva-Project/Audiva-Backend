@@ -1,5 +1,7 @@
 package com.example.audiva.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +11,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArtistRequest {
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name must be at most 100 characters")
     String name;
-    String avatarId;
+
+    @Size(max = 255, message = "Avatar must be at most 255 characters")
+    String avatar;
 }

@@ -3,13 +3,18 @@ package com.example.audiva.controller;
 import com.example.audiva.dto.request.ArtistRequest;
 import com.example.audiva.entity.Artist;
 import com.example.audiva.service.ArtistService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/artists")
+@RequestMapping("/artists")
 public class ArtistController {
     @Autowired
     private ArtistService artistService;
@@ -29,13 +34,13 @@ public class ArtistController {
         return artistService.searchArtistsByName(name);
     }
 
-    @PostMapping
-    public Artist createArtist(@RequestBody ArtistRequest request) {
-        return artistService.createArtist(request);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Artist createArtist(@Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+        return artistService.createArtist(request, file);
     }
 
     @PutMapping("/{id}")
-    public Artist updateArtist(@PathVariable Long id, @RequestBody ArtistRequest request) {
+    public Artist updateArtist(@PathVariable Long id, @Valid @RequestBody ArtistRequest request) {
         return artistService.updateArtist(id, request);
     }
 

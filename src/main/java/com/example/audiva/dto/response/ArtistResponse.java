@@ -14,7 +14,7 @@ import java.util.List;
 public class ArtistResponse {
     private String name;
 
-    private String avatarId;
+    private String avatar;
 
     private List<Album> albums;
 }

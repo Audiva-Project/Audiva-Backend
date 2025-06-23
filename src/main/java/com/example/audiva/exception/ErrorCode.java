@@ -13,7 +13,14 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
-    ;
+    INVALID_TOKEN(1009, "Invalid token", HttpStatus.UNAUTHORIZED),
+    INVALID_REFRESH_TOKEN(1010, "Invalid refresh token", HttpStatus.UNAUTHORIZED),
+    // Artist related errors
+    ARTIST_EXISTED(1011, "Artist existed", HttpStatus.BAD_REQUEST),
+    ARTIST_NOT_FOUND(1012, "Artist not found", HttpStatus.NOT_FOUND),
+    ARTIST_HAS_SONGS(1013, "Artist has songs, cannot delete", HttpStatus.BAD_REQUEST),
+    INVALID_SEARCH_TERM(1014, "Invalid search term", HttpStatus.BAD_REQUEST),
+    INVALID_ARTIST_NAME(1015, "Artist name is required", HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

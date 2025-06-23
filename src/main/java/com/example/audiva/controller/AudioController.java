@@ -15,7 +15,7 @@ import java.nio.file.Path;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/audio")
-public class TestController {
+public class AudioController {
 
     private final StorageService storageService;
 
@@ -23,7 +23,7 @@ public class TestController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadAudio(@RequestParam("file") MultipartFile file) {
         try {
-            String savedFilename = storageService.save(file);
+            String savedFilename = storageService.uploadFile(file);
             return ResponseEntity.ok("File uploaded as: " + savedFilename);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -31,19 +31,20 @@ public class TestController {
         }
     }
 
-    // 2. Lấy file MP3 đã upload
     @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> getAudio(@PathVariable String filename) {
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         try {
-            Path file = storageService.load(filename);
+            Path file = storageService.loadByFilename(filename);
             Resource resource = new UrlResource(file.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();
             }
 
+            MediaType mediaType = storageService.getMediaType(filename);
+
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.valueOf("audio/mpeg"));
+            headers.setContentType(mediaType);
             headers.setContentDisposition(ContentDisposition.inline().filename(filename).build());
 
             return ResponseEntity.ok()
@@ -52,6 +53,9 @@ public class TestController {
 
         } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
+
 }
