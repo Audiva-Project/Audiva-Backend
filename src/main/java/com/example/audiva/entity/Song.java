@@ -25,14 +25,8 @@ public class Song extends BaseEntity {
     @Column(name = "duration")
     private Integer duration;
 
-    @Column(name = "audio_id")
-    private String audioId;
-
-    @Column(name = "number_id")
-    private String numberId;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "audio_url")
+    private String audioUrl;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
