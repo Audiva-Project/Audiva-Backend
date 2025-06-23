@@ -1,7 +1,10 @@
 package com.example.audiva.controller;
 
 
+import com.example.audiva.dto.request.SongRequest;
+import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
+import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,9 @@ public class SongController {
     @Autowired
     private SongService songService;
 
+    @Autowired
+    private SongMapper songMapper;
+
     @GetMapping
     public List<Song> getAllSongs() {
         return songService.getAllSong();
@@ -26,14 +32,15 @@ public class SongController {
     }
 
     @PostMapping
-    public ResponseEntity<Song> createSong (@RequestBody Song song) {
-        return ResponseEntity.ok(songService.createSong(song));
+    public ResponseEntity<SongResponse> createSong (@RequestBody SongRequest song) {
+        return ResponseEntity.ok(songMapper.toSongResponse(songService.createSong(song)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Song> updateSong (@PathVariable Long id
-            , @RequestBody Song song) {
-        return ResponseEntity.ok(songService.updateSong(id, song));
+    public ResponseEntity<SongResponse> updateSong (@PathVariable Long id
+            , @RequestBody SongRequest song) {
+        Song updatedSong = songService.updateSong(id, song);
+        return ResponseEntity.ok(songMapper.toSongResponse(updatedSong));
     }
 
     @DeleteMapping("/{id}")

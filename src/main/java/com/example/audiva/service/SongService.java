@@ -1,6 +1,10 @@
 package com.example.audiva.service;
 
+import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.entity.Song;
+import com.example.audiva.exception.AppException;
+import com.example.audiva.exception.ErrorCode;
+import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,9 @@ public class SongService {
     @Autowired
     private SongRepository songRepository;
 
+    @Autowired
+    private SongMapper songMapper;
+
 //  Song management
     public List<Song> getAllSong() {
         return songRepository.findAll();
@@ -22,18 +29,20 @@ public class SongService {
                 .orElseThrow(() -> new RuntimeException("Song not found with id"+ id));
     }
 
-    public Song createSong (Song song) {
+    public Song createSong (SongRequest request) {
+        if(songRepository.existByTitle(request.getTitle())){
+            throw new AppException(ErrorCode.SONG_EXISTED);
+        }
+
+        Song song = songMapper.toSong(request);
+
         return  songRepository.save(song);
     }
 
 //  Còn 1 số thuộc tính chưa update
-    public Song updateSong (Long id, Song updateSong) {
+    public Song updateSong (Long id, SongRequest request) {
         Song existSong = getSongById(id);
-        existSong.setTitle(updateSong.getTitle());
-        //existSong.setArtist(updateSong.getArtist());
-        existSong.setGenre(updateSong.getGenre());
-        existSong.setDuration(updateSong.getDuration());
-        //existSong.setAudioUrl(updateSong.getAudioUrl());
+        songMapper.updateSongFromRequest(request, existSong);
         return songRepository.save(existSong);
     }
 
