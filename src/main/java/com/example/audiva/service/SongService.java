@@ -30,7 +30,7 @@ public class SongService {
     }
 
     public Song createSong (SongRequest request) {
-        if(songRepository.existByTitle(request.getTitle())){
+        if(songRepository.existsByTitle(request.getTitle())){
             throw new AppException(ErrorCode.SONG_EXISTED);
         }
 
@@ -39,7 +39,6 @@ public class SongService {
         return  songRepository.save(song);
     }
 
-//  Còn 1 số thuộc tính chưa update
     public Song updateSong (Long id, SongRequest request) {
         Song existSong = getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);

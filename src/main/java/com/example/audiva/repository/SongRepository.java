@@ -12,5 +12,5 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 //    List<Song> findByArtist(String artist);
 //    List<Song> findByAlbum (String album);
 //    List<Song> findByGenre (String genre);
-    Boolean existByTitle(String title);
+    boolean existsByTitle(String title);
 }

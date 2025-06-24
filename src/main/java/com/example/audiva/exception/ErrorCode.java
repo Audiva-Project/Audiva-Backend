@@ -18,6 +18,9 @@ public enum ErrorCode {
     SONG_EXISTED(1010, "", HttpStatus.BAD_REQUEST);
     ;
 
+    // Album Error code
+    //ALBUM_EXISTED(1010, "", HttpStatus.BAD_REQUEST);
+
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;
