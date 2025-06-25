@@ -1,5 +1,6 @@
 package com.example.audiva.entity;
 
+import com.example.audiva.enums.Genre;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,8 +20,9 @@ public class Song extends BaseEntity {
     @Column(name = "title")
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "genre")
-    private String genre;
+    private Genre genre;
 
     @Column(name = "duration")
     private Integer duration;

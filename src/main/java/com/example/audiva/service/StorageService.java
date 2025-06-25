@@ -9,8 +9,8 @@ import java.nio.file.*;
 
 @Service
 public class StorageService {
-    private final Path mp3Root = Paths.get("uploads/mp3");
-    private final Path imageRoot = Paths.get("uploads/picture");
+    private final Path mp3Root = Paths.get(System.getProperty("user.dir"), "uploads/mp3");
+    private final Path imageRoot = Paths.get(System.getProperty("user.dir"), "uploads/picture");
 
     public StorageService() throws IOException {
         Files.createDirectories(mp3Root);

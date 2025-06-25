@@ -18,6 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
+#ignore yaml files and uploads folder
+*.yaml
+/uploads
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,3 +34,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+

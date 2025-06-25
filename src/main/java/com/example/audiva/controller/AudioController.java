@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @RestController
@@ -36,6 +37,16 @@ public class AudioController {
         try {
             Path file = storageService.loadByFilename(filename);
             Resource resource = new UrlResource(file.toUri());
+
+            Path path = storageService.loadByFilename(filename);
+            System.out.println("Absolute path: " + path.toAbsolutePath());
+            System.out.println("Exists: " + Files.exists(path));
+            System.out.println("Readable: " + Files.isReadable(path));
+            System.out.println("URL: " + path.toUri());
+
+            UrlResource res = new UrlResource(path.toUri());
+            System.out.println("UrlResource exists: " + res.exists());
+            System.out.println("UrlResource readable: " + res.isReadable());
 
             if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();
