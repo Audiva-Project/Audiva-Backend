@@ -26,7 +26,6 @@ public class SongService {
     @Autowired
     private StorageService storageService;
 
-    //  Song management
     public List<Song> getAllSong() {
         return songRepository.findAll();
     }
@@ -37,7 +36,7 @@ public class SongService {
         return songMapper.toSongResponse(song);
     }
 
-    public Song createSong(SongRequest request) throws IOException {
+    public SongResponse createSong(SongRequest request) throws IOException {
         MultipartFile audio = request.getAudioFile();
         MultipartFile thumbnail = request.getThumbnailFile();
 
@@ -52,13 +51,13 @@ public class SongService {
                 .thumbnailUrl(thumbnailPath)
                 .build();
 
-        return songRepository.save(song);
+        return songMapper.toSongResponse(songRepository.save(song));
     }
 
-    public Song updateSong(Long id, SongRequest request) {
+    public SongResponse updateSong(Long id, SongRequest request) {
         Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
-        return songRepository.save(existSong);
+        return songMapper.toSongResponse(songRepository.save(existSong));
     }
 
     public void deleteSong(Long id) {
