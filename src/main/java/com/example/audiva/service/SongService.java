@@ -3,6 +3,7 @@ package com.example.audiva.service;
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
+import com.example.audiva.enums.Genre;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.SongMapper;
@@ -25,7 +26,7 @@ public class SongService {
     @Autowired
     private StorageService storageService;
 
-//  Song management
+    //  Song management
     public List<Song> getAllSong() {
         return songRepository.findAll();
     }
@@ -36,7 +37,7 @@ public class SongService {
         return songMapper.toSongResponse(song);
     }
 
-    public Song createSong (SongRequest request) throws IOException {
+    public Song createSong(SongRequest request) throws IOException {
         MultipartFile audio = request.getAudioFile();
         MultipartFile thumbnail = request.getThumbnailFile();
 
@@ -45,7 +46,7 @@ public class SongService {
 
         Song song = Song.builder()
                 .title(request.getTitle())
-                .genre(request.getGenre())
+                .genre(Genre.valueOf(request.getGenre()))
                 .duration(request.getDuration())
                 .audioUrl(audioPath)
                 .thumbnailUrl(thumbnailPath)
@@ -54,13 +55,13 @@ public class SongService {
         return songRepository.save(song);
     }
 
-    public Song updateSong (Long id, SongRequest request) {
+    public Song updateSong(Long id, SongRequest request) {
         Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
         return songRepository.save(existSong);
     }
 
-    public void deleteSong (Long id) {
+    public void deleteSong(Long id) {
         songRepository.deleteById(id);
     }
 }
