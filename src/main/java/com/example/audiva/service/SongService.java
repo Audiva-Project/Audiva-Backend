@@ -1,6 +1,7 @@
 package com.example.audiva.service;
 
 import com.example.audiva.dto.request.SongRequest;
+import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
@@ -29,9 +30,10 @@ public class SongService {
         return songRepository.findAll();
     }
 
-    public Song getSongById(Long id) {
-        return songRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Song not found with id"+ id));
+    public SongResponse getSongById(Long id) {
+        Song song = songRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
+        return songMapper.toSongResponse(song);
     }
 
     public Song createSong (SongRequest request) throws IOException {
@@ -52,9 +54,8 @@ public class SongService {
         return songRepository.save(song);
     }
 
-//  Còn 1 số thuộc tính chưa update
     public Song updateSong (Long id, SongRequest request) {
-        Song existSong = getSongById(id);
+        Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
         return songRepository.save(existSong);
     }

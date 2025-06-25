@@ -1,6 +1,7 @@
 package com.example.audiva.controller;
 
 
+import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
@@ -29,26 +30,33 @@ public class SongController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Song> getSongById (@PathVariable Long id) {
-        return ResponseEntity.ok(songService.getSongById(id));
+    public ApiResponse<SongResponse> getSongById (@PathVariable Long id) {
+        return ApiResponse.<SongResponse>builder()
+                .result(songService.getSongById(id)).build();
     }
 
     @PostMapping(value = "",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
-        return ResponseEntity.ok(songMapper.toSongResponse(songService.createSong(song)));
+    public ApiResponse<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
+        return  ApiResponse.<SongResponse>builder()
+                .result(songMapper.toSongResponse(songService.createSong(song)))
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SongResponse> updateSong (@PathVariable Long id
+    public ApiResponse<SongResponse> updateSong (@PathVariable Long id
             , @RequestBody SongRequest song) {
         Song updatedSong = songService.updateSong(id, song);
-        return ResponseEntity.ok(songMapper.toSongResponse(updatedSong));
+        return ApiResponse.<SongResponse>builder()
+                .result(songMapper.toSongResponse(updatedSong))
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSong (@PathVariable Long id) {
+    public ApiResponse<Void> deleteSong (@PathVariable Long id) {
         songService.deleteSong(id);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.<Void>builder()
+                .result(null)
+                .build();
     }
 }
