@@ -1,15 +1,18 @@
 package com.example.audiva.controller;
 
 
+import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
 import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,25 +30,33 @@ public class SongController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Song> getSongById (@PathVariable Long id) {
-        return ResponseEntity.ok(songService.getSongById(id));
+    public ApiResponse<SongResponse> getSongById (@PathVariable Long id) {
+        return ApiResponse.<SongResponse>builder()
+                .result(songService.getSongById(id)).build();
     }
 
-    @PostMapping
-    public ResponseEntity<SongResponse> createSong (@RequestBody SongRequest song) {
-        return ResponseEntity.ok(songMapper.toSongResponse(songService.createSong(song)));
+    @PostMapping(value = "",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
+        return  ApiResponse.<SongResponse>builder()
+                .result(songMapper.toSongResponse(songService.createSong(song)))
+                .build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SongResponse> updateSong (@PathVariable Long id
+    public ApiResponse<SongResponse> updateSong (@PathVariable Long id
             , @RequestBody SongRequest song) {
         Song updatedSong = songService.updateSong(id, song);
-        return ResponseEntity.ok(songMapper.toSongResponse(updatedSong));
+        return ApiResponse.<SongResponse>builder()
+                .result(songMapper.toSongResponse(updatedSong))
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSong (@PathVariable Long id) {
+    public ApiResponse<Void> deleteSong (@PathVariable Long id) {
         songService.deleteSong(id);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.<Void>builder()
+                .result(null)
+                .build();
     }
 }

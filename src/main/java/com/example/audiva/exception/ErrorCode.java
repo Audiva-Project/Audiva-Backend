@@ -23,7 +23,8 @@ public enum ErrorCode {
     INVALID_ARTIST_NAME(1015, "Artist name is required", HttpStatus.BAD_REQUEST),
 
     // SONG Error code
-    SONG_EXISTED(1016, "Song existed", HttpStatus.BAD_REQUEST);
+    SONG_EXISTED(1016, "Song existed", HttpStatus.BAD_REQUEST),
+    SONG_NOT_FOUND(1017, "Song not found", HttpStatus.NOT_FOUND);
 
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

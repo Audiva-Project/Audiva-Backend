@@ -2,6 +2,7 @@ package com.example.audiva.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ public class SongRequest {
     String title;
     String genre;
     Integer duration;
-    String audioUrl;
+    MultipartFile audioFile;
+    MultipartFile thumbnailFile;
 
     private Long albumId;
     private List<Long> artistIds;
