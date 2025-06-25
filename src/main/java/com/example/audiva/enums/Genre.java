@@ -1,5 +1,7 @@
 package com.example.audiva.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Genre {
     POP,
     ROCK,
@@ -9,5 +11,11 @@ public enum Genre {
     CLASSICAL,
     COUNTRY,
     RNB,
-    OTHER
+    Ballad,
+    OTHER;
+
+    @JsonCreator
+    public static Genre fromString(String value) {
+        return Genre.valueOf(value.toUpperCase());
+    }
 }

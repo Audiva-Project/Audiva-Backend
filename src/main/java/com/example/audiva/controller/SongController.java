@@ -39,24 +39,20 @@ public class SongController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
         return  ApiResponse.<SongResponse>builder()
-                .result(songMapper.toSongResponse(songService.createSong(song)))
+                .result((songService.createSong(song)))
                 .build();
     }
 
     @PutMapping("/{id}")
     public ApiResponse<SongResponse> updateSong (@PathVariable Long id
             , @RequestBody SongRequest song) {
-        Song updatedSong = songService.updateSong(id, song);
         return ApiResponse.<SongResponse>builder()
-                .result(songMapper.toSongResponse(updatedSong))
+                .result(songService.updateSong(id, song))
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteSong (@PathVariable Long id) {
+    public void deleteSong (@PathVariable Long id) {
         songService.deleteSong(id);
-        return ApiResponse.<Void>builder()
-                .result(null)
-                .build();
     }
 }
