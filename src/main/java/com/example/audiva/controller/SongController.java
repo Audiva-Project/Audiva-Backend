@@ -7,9 +7,11 @@ import com.example.audiva.entity.Song;
 import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -31,8 +33,9 @@ public class SongController {
         return ResponseEntity.ok(songService.getSongById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<SongResponse> createSong (@RequestBody SongRequest song) {
+    @PostMapping(value = "",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
         return ResponseEntity.ok(songMapper.toSongResponse(songService.createSong(song)));
     }
 

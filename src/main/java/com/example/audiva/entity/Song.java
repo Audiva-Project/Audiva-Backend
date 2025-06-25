@@ -1,8 +1,7 @@
 package com.example.audiva.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +9,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "song")
 public class Song extends BaseEntity {
     @Id
@@ -27,6 +29,9 @@ public class Song extends BaseEntity {
 
     @Column(name = "audio_url")
     private String audioUrl;
+
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
