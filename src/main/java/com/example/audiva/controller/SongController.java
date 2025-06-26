@@ -25,26 +25,26 @@ public class SongController {
     private SongMapper songMapper;
 
     @GetMapping
-    public List<Song> getAllSongs() {
+    public List<SongResponse> getAllSongs() {
         return songService.getAllSong();
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<SongResponse> getSongById (@PathVariable Long id) {
+    public ApiResponse<SongResponse> getSongById(@PathVariable Long id) {
         return ApiResponse.<SongResponse>builder()
                 .result(songService.getSongById(id)).build();
     }
 
     @PostMapping(value = "",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<SongResponse> createSong (@ModelAttribute SongRequest song) throws IOException {
-        return  ApiResponse.<SongResponse>builder()
+    public ApiResponse<SongResponse> createSong(@ModelAttribute SongRequest song) throws IOException {
+        return ApiResponse.<SongResponse>builder()
                 .result((songService.createSong(song)))
                 .build();
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<SongResponse> updateSong (@PathVariable Long id
+    public ApiResponse<SongResponse> updateSong(@PathVariable Long id
             , @RequestBody SongRequest song) {
         return ApiResponse.<SongResponse>builder()
                 .result(songService.updateSong(id, song))
@@ -52,7 +52,7 @@ public class SongController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSong (@PathVariable Long id) {
+    public void deleteSong(@PathVariable Long id) {
         songService.deleteSong(id);
     }
 }

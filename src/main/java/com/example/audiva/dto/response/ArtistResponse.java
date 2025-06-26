@@ -12,6 +12,8 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArtistResponse {
+    private Long id;
+
     private String name;
 
     private String avatar;

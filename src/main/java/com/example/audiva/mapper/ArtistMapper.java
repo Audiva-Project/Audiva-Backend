@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 public interface ArtistMapper {
     Artist toArtist(ArtistRequest artistRequest);
 
+    @Mapping(source = "id", target = "id")
     ArtistResponse toArtistResponse(Artist artist);
 
     @Mapping(target = "id", ignore = true)

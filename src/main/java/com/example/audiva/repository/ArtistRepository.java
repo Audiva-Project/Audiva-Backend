@@ -11,4 +11,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     List<Artist> findByNameContainingIgnoreCase(String name);
 
     boolean existsByName(String name);
+
+    Artist findArtistById(Long id);
 }

@@ -39,16 +39,17 @@ public class Song extends BaseEntity {
     @JoinColumn(name = "album_id")
     private Album album;
 
-    @OneToMany(mappedBy = "song")
+    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private List<FavoriteSong> favoriteSongs;
 
-    @OneToMany(mappedBy = "song")
+    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+
     private List<ListeningHistory> listeningHistories;
 
-    @OneToMany(mappedBy = "song")
+    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private List<PlaylistSong> playlistSongs;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
             joinColumns = @JoinColumn(name = "song_id"),

@@ -21,7 +21,7 @@ public class Artist extends BaseEntity {
     @Column(name = "avatar")
     private String avatar;
 
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Album> albums;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)

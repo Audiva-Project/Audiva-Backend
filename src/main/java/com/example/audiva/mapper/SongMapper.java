@@ -12,10 +12,9 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface SongMapper {
-
-    // Entity -> Response
-    @Mapping(source = "album", target = "album")
-    @Mapping(source = "artists", target = "artists")
+    
+    @Mapping(target = "album", ignore = true)
+    @Mapping(target = "artists", ignore = true)
     SongResponse toSongResponse(Song song);
 
     @Mapping(target = "favoriteSongs", ignore = true)

@@ -1,6 +1,7 @@
 package com.example.audiva.controller;
 
 import com.example.audiva.dto.request.ArtistRequest;
+import com.example.audiva.dto.response.ArtistResponse;
 import com.example.audiva.entity.Artist;
 import com.example.audiva.service.ArtistService;
 import jakarta.validation.Valid;
@@ -20,28 +21,28 @@ public class ArtistController {
     private ArtistService artistService;
 
     @GetMapping
-    public List<Artist> getAllArtists() {
+    public List<ArtistResponse> getAllArtists() {
         return artistService.findAllArtists();
     }
 
     @GetMapping("/{id}")
-    public Artist getArtistById(@PathVariable Long id) {
+    public ArtistResponse getArtistById(@PathVariable Long id) {
         return artistService.findArtistById(id);
     }
 
     @GetMapping("/search/{name}")
-    public List<Artist> searchArtistsByName(@PathVariable String name) {
+    public List<ArtistResponse> searchArtistsByName(@PathVariable String name) {
         return artistService.searchArtistsByName(name);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Artist createArtist(@Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public ArtistResponse createArtist(@Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         return artistService.createArtist(request, file);
     }
 
-    @PutMapping("/{id}")
-    public Artist updateArtist(@PathVariable Long id, @Valid @RequestBody ArtistRequest request) {
-        return artistService.updateArtist(id, request);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ArtistResponse updateArtist(@PathVariable Long id, @Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+        return artistService.updateArtist(id, request, file);
     }
 
     @DeleteMapping("/{id}")
