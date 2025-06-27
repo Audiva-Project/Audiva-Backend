@@ -20,9 +20,6 @@ target/
 *.ipr
 #ignore yaml files and uploads folder
 *.yaml
-/uploads
-**/uploads/
-!**/uploads/.gitkeep
 
 ### NetBeans ###
 /nbproject/private/
