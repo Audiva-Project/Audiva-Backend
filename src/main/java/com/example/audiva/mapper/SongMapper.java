@@ -25,5 +25,6 @@ public interface SongMapper {
     @Mapping(target = "favoriteSongs", ignore = true)
     @Mapping(target = "listeningHistories", ignore = true)
     @Mapping(target = "playlistSongs", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSongFromRequest(SongRequest request, @MappingTarget Song song);
 }

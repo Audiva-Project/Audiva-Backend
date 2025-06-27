@@ -75,6 +75,21 @@ public class SongService {
     public SongResponse updateSong(Long id, SongRequest request) {
         Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
+        if(request.getAudioFile() != null) {
+            try {
+                existSong.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        }
+        if (request.getThumbnailFile() != null) {
+            try {
+                existSong.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        }
+
         return songMapper.toSongResponse(songRepository.save(existSong));
     }
 

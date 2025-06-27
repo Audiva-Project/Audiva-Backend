@@ -1,5 +1,6 @@
 package com.example.audiva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,7 @@ public class Artist extends BaseEntity {
     private String avatar;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Album> albums;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
