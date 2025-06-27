@@ -18,8 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-#ignore yaml files and uploads folder
-*.yaml
+
 
 ### NetBeans ###
 /nbproject/private/
