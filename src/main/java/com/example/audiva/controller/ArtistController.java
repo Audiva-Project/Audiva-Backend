@@ -2,7 +2,6 @@ package com.example.audiva.controller;
 
 import com.example.audiva.dto.request.ArtistRequest;
 import com.example.audiva.dto.response.ArtistResponse;
-import com.example.audiva.entity.Artist;
 import com.example.audiva.service.ArtistService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
