@@ -2,12 +2,12 @@ package com.example.audiva.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "artist")
@@ -27,5 +27,6 @@ public class Artist extends BaseEntity {
     private List<Album> albums;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Song> songs;
 }

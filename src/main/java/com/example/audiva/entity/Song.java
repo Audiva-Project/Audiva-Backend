@@ -8,7 +8,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
@@ -38,7 +39,6 @@ public class Song extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "album_id")
-    @ToString.Exclude
     @JsonIgnore
     private Album album;
 

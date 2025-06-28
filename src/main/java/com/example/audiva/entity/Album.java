@@ -1,15 +1,14 @@
 package com.example.audiva.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "album")
 public class Album extends BaseEntity {
@@ -31,6 +30,5 @@ public class Album extends BaseEntity {
     private Artist artist;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     private List<Song> songs;
 }
