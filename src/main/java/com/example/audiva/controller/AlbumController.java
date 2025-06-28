@@ -63,16 +63,12 @@ public class AlbumController {
 
     @DeleteMapping("/{albumId}/songs/{songId}")
     public ResponseEntity<?> removeSongFromAlbum(@PathVariable Long albumId, @PathVariable Long songId) {
-
-        // Bước 1: Tìm album
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new AppException(ErrorCode.ALBUM_NOT_FOUND));
 
-        // Bước 2: Tìm bài hát
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
 
-        // Bước 3: Kiểm tra xem bài hát có nằm trong album không
         if (song.getAlbum() == null || !song.getAlbum().getId().equals(albumId)) {
             throw new AppException(ErrorCode.SONG_NOT_IN_ALBUM);
         }
