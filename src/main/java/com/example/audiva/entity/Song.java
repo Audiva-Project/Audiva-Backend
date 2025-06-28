@@ -1,6 +1,7 @@
 package com.example.audiva.entity;
 
 import com.example.audiva.enums.Genre;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,8 @@ public class Song extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "album_id")
+    @ToString.Exclude
+    @JsonIgnore
     private Album album;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)

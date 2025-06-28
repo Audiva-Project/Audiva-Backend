@@ -3,6 +3,7 @@ package com.example.audiva.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +30,7 @@ public class Album extends BaseEntity {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Song> songs;
 }
