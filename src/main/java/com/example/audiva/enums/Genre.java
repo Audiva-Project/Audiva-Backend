@@ -12,6 +12,7 @@ public enum Genre {
     COUNTRY,
     RNB,
     Ballad,
+    INDIE,
     OTHER;
 
     @JsonCreator

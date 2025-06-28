@@ -1,13 +1,15 @@
 package com.example.audiva.entity;
 
 import com.example.audiva.enums.Genre;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
@@ -37,6 +39,7 @@ public class Song extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "album_id")
+    @JsonIgnore
     private Album album;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
