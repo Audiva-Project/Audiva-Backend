@@ -7,6 +7,7 @@ import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
 import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.service.SongService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +44,10 @@ public class SongController {
                 .build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<SongResponse> updateSong(@PathVariable Long id
-            , @RequestBody SongRequest song) {
+            ,@Valid @ModelAttribute SongRequest song) {
         return ApiResponse.<SongResponse>builder()
                 .result(songService.updateSong(id, song))
                 .build();

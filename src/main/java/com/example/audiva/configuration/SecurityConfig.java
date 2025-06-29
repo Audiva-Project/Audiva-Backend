@@ -36,6 +36,7 @@ public class SecurityConfig {
                         request.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/audio/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                                .requestMatchers("/api/albums/**").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder)

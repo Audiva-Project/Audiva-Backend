@@ -2,7 +2,6 @@ package com.example.audiva.service;
 
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
-import com.example.audiva.entity.Album;
 import com.example.audiva.entity.Artist;
 import com.example.audiva.entity.Song;
 import com.example.audiva.enums.Genre;
@@ -14,9 +13,7 @@ import com.example.audiva.repository.SongRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +27,6 @@ public class SongService {
     SongMapper songMapper;
     StorageService storageService;
     ArtistRepository artistRepository;
-
 
     public List<SongResponse> getAllSong() {
         return songRepository.findAll()
@@ -46,20 +42,12 @@ public class SongService {
     }
 
     public SongResponse createSong(SongRequest request) throws IOException {
-
         Song song = songMapper.toSong(request);
         if (song.getGenre() == null) {
             song.setGenre(Genre.OTHER);
         }
         song.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
         song.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
-
-        // Gán Album nếu có
-//        if (request.getAlbumId() != null) {
-//            Album album = albumRepository.findById(request.getAlbumId())
-//                    .orElseThrow(() -> new EntityNotFoundException("Album not found: " + request.getAlbumId()));
-//            song.setAlbum(album);
-//        }
 
         if (request.getArtistIds() != null && !request.getArtistIds().isEmpty()) {
             List<Artist> artists = artistRepository.findAllById(request.getArtistIds());
@@ -75,6 +63,31 @@ public class SongService {
     public SongResponse updateSong(Long id, SongRequest request) {
         Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
+
+        if (request.getAudioFile() != null) {
+            try {
+                existSong.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        }
+
+        if (request.getThumbnailFile() != null) {
+            try {
+                existSong.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+            } catch (IOException e) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        }
+
+        if (request.getArtistIds() != null && !request.getArtistIds().isEmpty()) {
+            List<Artist> artists = artistRepository.findAllById(request.getArtistIds());
+            if (artists.size() != request.getArtistIds().size()) {
+                throw new AppException(ErrorCode.ARTIST_NOT_FOUND);
+            }
+            existSong.setArtists(artists);
+        }
+
         return songMapper.toSongResponse(songRepository.save(existSong));
     }
 

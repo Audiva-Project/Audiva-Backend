@@ -11,6 +11,7 @@ public class SongResponse {
     private String genre;
     private Integer duration;
     private String audioUrl;
+    private String thumbnailUrl;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;

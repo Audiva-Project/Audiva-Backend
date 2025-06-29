@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface SongMapper {
-    
-    @Mapping(target = "album", ignore = true)
-    @Mapping(target = "artists", ignore = true)
     SongResponse toSongResponse(Song song);
 
     @Mapping(target = "favoriteSongs", ignore = true)
@@ -25,5 +22,6 @@ public interface SongMapper {
     @Mapping(target = "favoriteSongs", ignore = true)
     @Mapping(target = "listeningHistories", ignore = true)
     @Mapping(target = "playlistSongs", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSongFromRequest(SongRequest request, @MappingTarget Song song);
 }
