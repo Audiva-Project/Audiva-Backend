@@ -44,7 +44,7 @@ public class UserController {
         return ApiResponse.<UserReponse>builder().result(userService.getUserById(userId)).build();
     }
 
-    @GetMapping("/myInfo")
+    @GetMapping("/me")
     public ApiResponse<UserReponse> getMyInfo() {
         return ApiResponse.<UserReponse>builder()
                 .result(userService.getMyInfo())
