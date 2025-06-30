@@ -13,6 +13,7 @@ public enum Genre {
     RNB,
     Ballad,
     INDIE,
+    RAP,
     OTHER;
 
     @JsonCreator
