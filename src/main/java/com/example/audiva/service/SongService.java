@@ -13,6 +13,8 @@ import com.example.audiva.repository.SongRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,11 +30,9 @@ public class SongService {
     StorageService storageService;
     ArtistRepository artistRepository;
 
-    public List<SongResponse> getAllSong() {
-        return songRepository.findAll()
-                .stream()
-                .map(songMapper::toSongResponse)
-                .toList();
+    public Page<SongResponse> getAllSong(Pageable pageable) {
+        return songRepository.findAll(pageable)
+                .map(songMapper::toSongResponse);
     }
 
     public SongResponse getSongById(Long id) {
@@ -93,5 +93,10 @@ public class SongService {
 
     public void deleteSong(Long id) {
         songRepository.deleteById(id);
+    }
+
+    public Song getSongEntityById(Long id) {
+        return songRepository.findById(id)
+                .orElse(null);
     }
 }
