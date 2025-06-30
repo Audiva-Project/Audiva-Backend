@@ -3,7 +3,7 @@ package com.example.audiva.controller;
 import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.UserCreationRequest;
 import com.example.audiva.dto.request.UserUpdateRequest;
-import com.example.audiva.dto.response.UserReponse;
+import com.example.audiva.dto.response.UserResponse;
 import com.example.audiva.entity.User;
 import com.example.audiva.service.UserService;
 import jakarta.validation.Valid;
@@ -25,8 +25,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ApiResponse<UserReponse> create(@RequestBody @Valid UserCreationRequest request) {
-        return ApiResponse.<UserReponse>builder().result(userService.createUser(request)).build();
+    public ApiResponse<UserResponse> create(@RequestBody @Valid UserCreationRequest request) {
+        return ApiResponse.<UserResponse>builder().result(userService.createUser(request)).build();
     }
 
     @GetMapping
@@ -40,20 +40,20 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<UserReponse> get(@PathVariable String userId) {
-        return ApiResponse.<UserReponse>builder().result(userService.getUserById(userId)).build();
+    public ApiResponse<UserResponse> get(@PathVariable String userId) {
+        return ApiResponse.<UserResponse>builder().result(userService.getUserById(userId)).build();
     }
 
     @GetMapping("/me")
-    public ApiResponse<UserReponse> getMyInfo() {
-        return ApiResponse.<UserReponse>builder()
+    public ApiResponse<UserResponse> getMyInfo() {
+        return ApiResponse.<UserResponse>builder()
                 .result(userService.getMyInfo())
                 .build();
     }
 
     @PutMapping("/{userId}")
-    public ApiResponse<UserReponse> update(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
-        return ApiResponse.<UserReponse>builder().result(userService.updateUser(userId, request)).build();
+    public ApiResponse<UserResponse> update(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder().result(userService.updateUser(userId, request)).build();
     }
 
     @DeleteMapping("/{userId}")

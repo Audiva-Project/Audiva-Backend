@@ -59,4 +59,7 @@ public class Song extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     private List<Artist> artists;
+
+    @Column(name = "is_premium", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
+    private boolean premium;
 }

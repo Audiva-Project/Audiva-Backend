@@ -12,6 +12,7 @@ public class SongResponse {
     private Integer duration;
     private String audioUrl;
     private String thumbnailUrl;
+    private boolean isPremium;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;

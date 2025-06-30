@@ -49,6 +49,12 @@ public class SongService {
         song.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
         song.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
 
+        if (request.getIsPremium() != null) {
+            song.setPremium(Boolean.parseBoolean(request.getIsPremium()));
+        } else {
+            song.setPremium(false);
+        }
+
         if (request.getArtistIds() != null && !request.getArtistIds().isEmpty()) {
             List<Artist> artists = artistRepository.findAllById(request.getArtistIds());
             if (artists.size() != request.getArtistIds().size()) {
@@ -63,6 +69,16 @@ public class SongService {
     public SongResponse updateSong(Long id, SongRequest request) {
         Song existSong = songRepository.getSongById(id);
         songMapper.updateSongFromRequest(request, existSong);
+
+        if (existSong.getGenre() == null) {
+            existSong.setGenre(Genre.OTHER);
+        }
+
+        if (request.getIsPremium() != null) {
+            existSong.setPremium(Boolean.parseBoolean(request.getIsPremium()));
+        } else {
+            existSong.setPremium(false);
+        }
 
         if (request.getAudioFile() != null) {
             try {

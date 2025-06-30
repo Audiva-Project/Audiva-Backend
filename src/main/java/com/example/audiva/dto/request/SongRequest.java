@@ -17,7 +17,7 @@ public class SongRequest {
     Integer duration;
     MultipartFile audioFile;
     MultipartFile thumbnailFile;
-
-    private Long albumId;
-    private List<Long> artistIds;
+    String isPremium;
+    Long albumId;
+    List<Long> artistIds;
 }

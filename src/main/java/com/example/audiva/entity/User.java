@@ -23,6 +23,7 @@ public class User {
     String firstName;
     String lastName;
     LocalDate dob;
+    Boolean isPremium;
 
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;

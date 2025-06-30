@@ -17,4 +17,5 @@ public class UserUpdateRequest {
     String lastName;
     LocalDate dob;
     List<String> roles;
+    Boolean isPremium;
 }
