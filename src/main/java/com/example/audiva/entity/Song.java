@@ -46,7 +46,6 @@ public class Song extends BaseEntity {
     private List<FavoriteSong> favoriteSongs;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
-
     private List<ListeningHistory> listeningHistories;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
