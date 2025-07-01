@@ -86,10 +86,17 @@ public class SongController {
                 .body(resource);
     }
 
-
-
     @DeleteMapping("/{id}")
     public void deleteSong(@PathVariable Long id) {
         songService.deleteSong(id);
+    }
+
+    // get all songs create by me
+    @GetMapping("/created-by-me")
+    public ApiResponse<Page<SongResponse>> getSongsCreatedByMe(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ApiResponse.<Page<SongResponse>>builder()
+                .result(songService.getSongsCreatedByMe(pageable))
+                .build();
     }
 }

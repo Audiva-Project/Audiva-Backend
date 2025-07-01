@@ -13,6 +13,7 @@ public class SongResponse {
     private String audioUrl;
     private String thumbnailUrl;
     private boolean isPremium;
+    private String createdBy;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;

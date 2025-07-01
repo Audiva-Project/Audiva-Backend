@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/audio/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
                                 .requestMatchers("/api/albums/**").permitAll()
+                                .requestMatchers("/api/history/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/songs/**").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
