@@ -15,13 +15,16 @@ public class ListeningHistory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "song_id")
     private Song song;
+
+    @Column(name = "anonymous_id")
+    private String anonymousId;
 
     @Column(name = "listened_at")
     private LocalDateTime listenedAt;

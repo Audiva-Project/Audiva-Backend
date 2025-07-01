@@ -8,6 +8,7 @@ import com.example.audiva.enums.Genre;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.SongMapper;
+import com.example.audiva.repository.AlbumRepository;
 import com.example.audiva.repository.ArtistRepository;
 import com.example.audiva.repository.SongRepository;
 import lombok.AccessLevel;
@@ -15,10 +16,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,10 +33,11 @@ public class SongService {
     SongMapper songMapper;
     StorageService storageService;
     ArtistRepository artistRepository;
+    AlbumRepository albumRepository;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
-        return songRepository.findAll(pageable)
-                .map(songMapper::toSongResponse);
+        Page<Song> songs = songRepository.findAll(pageable);
+        return songs.map(songMapper::toSongResponse);
     }
 
     public SongResponse getSongById(Long id) {
@@ -61,6 +66,16 @@ public class SongService {
                 throw new AppException(ErrorCode.ARTIST_NOT_FOUND);
             }
             song.setArtists(artists);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            song.setCreatedBy(username);
+            song.setCreatedDate(java.time.LocalDateTime.now());
+        } else {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
         }
 
         return songMapper.toSongResponse(songRepository.save(song));
@@ -104,6 +119,24 @@ public class SongService {
             existSong.setArtists(artists);
         }
 
+        // change album association if albumId is provided
+        if (request.getAlbumId() != null) {
+            existSong.setAlbum(albumRepository.getAlbumById(request.getAlbumId())
+                    .orElseThrow(() -> new AppException(ErrorCode.ALBUM_NOT_FOUND)));
+        } else {
+            existSong.setAlbum(null);
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            existSong.setModifiedBy(username);
+            existSong.setModifiedDate(java.time.LocalDateTime.now());
+        } else {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
         return songMapper.toSongResponse(songRepository.save(existSong));
     }
 
@@ -115,4 +148,20 @@ public class SongService {
         return songRepository.findById(id)
                 .orElse(null);
     }
+
+    // get song by createdBy
+    public Page<SongResponse> getSongsCreatedByMe(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        String username = authentication.getName();
+
+        Page<Song> songs = songRepository.findByCreatedBy(username, pageable);
+        return songs.map(songMapper::toSongResponse);
+    }
+
+
 }
