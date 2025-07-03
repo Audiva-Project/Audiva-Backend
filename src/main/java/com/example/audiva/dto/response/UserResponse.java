@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,4 +20,6 @@ public class UserResponse {
     LocalDate dob;
     Set<RoleResponse> roles;
     Boolean isPremium;
+
+    private List<PlaylistResponse> playlists;
 }
