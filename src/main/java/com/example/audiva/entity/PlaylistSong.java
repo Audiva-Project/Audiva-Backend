@@ -1,12 +1,16 @@
 package com.example.audiva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "playlist_song")
@@ -22,15 +26,10 @@ public class PlaylistSong extends BaseEntity {
     @ManyToOne
     @MapsId("songId")
     @JoinColumn(name = "song_id")
+    @JsonIgnore
     private Song song;
 
     @Column(name = "order_in_playlist")
     private Integer orderInPlaylist;
 }
 
-@Embeddable
-@Data
-class PlaylistSongId implements Serializable {
-    private Long playlistId;
-    private Long songId;
-}

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,5 +28,8 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    Set<Playlist> playlists;
 }
 

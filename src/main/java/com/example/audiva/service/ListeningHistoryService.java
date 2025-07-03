@@ -28,6 +28,21 @@ public class ListeningHistoryService {
     ListeningHistoryMapper listeningHistoryMapper;
 
     public void save(String userId, Long songId, String anonymousId) {
+        boolean exists;
+        if (userId != null) {
+            exists = listeningHistoryRepository
+                    .findByUserIdAndSongId(userId, songId)
+                    .isPresent();
+        } else {
+            exists = listeningHistoryRepository
+                    .findByAnonymousIdAndSongId(anonymousId, songId)
+                    .isPresent();
+        }
+
+        if (exists) {
+            return;
+        }
+
         ListeningHistory history = new ListeningHistory();
         if(userId != null) {
             history.setUser(userRepository.findById(userId)

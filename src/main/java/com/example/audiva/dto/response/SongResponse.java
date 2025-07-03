@@ -1,10 +1,16 @@
 package com.example.audiva.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SongResponse {
     private Long id;
     private String title;
@@ -25,6 +31,7 @@ public class SongResponse {
     }
 
     @Data
+    @Builder
     public static class ArtistSummary {
         private Long id;
         private String name;

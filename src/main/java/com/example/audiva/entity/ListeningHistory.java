@@ -10,7 +10,11 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "listening_history")
+@Table(name = "listening_history",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "song_id"}),
+                @UniqueConstraint(columnNames = {"anonymous_id", "song_id"})
+        })
 public class ListeningHistory extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

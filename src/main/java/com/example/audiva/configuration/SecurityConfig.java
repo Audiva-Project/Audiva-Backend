@@ -36,9 +36,13 @@ public class SecurityConfig {
                         request.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/audio/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                                .requestMatchers("/api/albums/**").permitAll()
-                                .requestMatchers("/api/history/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/history/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/history/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/songs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/playlists/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/playlists/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/albums/**").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder)

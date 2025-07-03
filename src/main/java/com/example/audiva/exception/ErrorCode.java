@@ -30,7 +30,11 @@ public enum ErrorCode {
     // ALBUM Error code
     ALBUM_EXISTED(1019, "Album existed", HttpStatus.BAD_REQUEST),
     SONG_NOT_IN_ALBUM(1019, "Song not in album", HttpStatus.BAD_REQUEST),
-    ALBUM_NOT_FOUND(1020, "Album not found", HttpStatus.NOT_FOUND);
+    ALBUM_NOT_FOUND(1020, "Album not found", HttpStatus.NOT_FOUND),
+
+    // PLAYLIST Error code
+    PLAYLIST_EXISTED(1021, "Playlist existed", HttpStatus.BAD_REQUEST),
+    INVALID_PLAYLIST(1022,"Invalid Playlist",HttpStatus.NOT_FOUND);
 
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
