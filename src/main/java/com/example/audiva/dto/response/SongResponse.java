@@ -18,7 +18,7 @@ public class SongResponse {
     private Integer duration;
     private String audioUrl;
     private String thumbnailUrl;
-    private boolean isPremium;
+    private boolean premium;
     private String createdBy;
 
     private AlbumSummary album;

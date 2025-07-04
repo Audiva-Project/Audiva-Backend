@@ -10,15 +10,15 @@ spring:
   datasource:
     url: "jdbc:mysql://localhost:3306/audiva"
     username: root
-    password: Huytk123@
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
+  #    properties:
+  #      hibernate:
+  #        show_sql: true
+  #        format_sql: true
 
   servlet:
     multipart:
@@ -29,3 +29,9 @@ jwt:
   signerKey: "1a92f26d86514e94c5991ca2afa01e6680d70b94518e8508541e1ea90f6106f9"
   accessTokenExpiration: 900
   refreshTokenExpiration: 604800
+
+vnpay:
+  tmn-code: Z0K7KAKL
+  hash-secret: SLM2ZXMO9LNC6JTSC3RI4XHYW6K1JEAU
+  vnp-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  vnp-return-url: http://localhost:8080/identity/api/premium/payment-return

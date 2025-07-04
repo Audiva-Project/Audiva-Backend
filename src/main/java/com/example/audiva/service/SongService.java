@@ -33,6 +33,7 @@ public class SongService {
     SongMapper songMapper;
     StorageService storageService;
     ArtistRepository artistRepository;
+    PremiumService premiumService;
     AlbumRepository albumRepository;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
@@ -56,8 +57,6 @@ public class SongService {
 
         if (request.getIsPremium() != null) {
             song.setPremium(Boolean.parseBoolean(request.getIsPremium()));
-        } else {
-            song.setPremium(false);
         }
 
         if (request.getArtistIds() != null && !request.getArtistIds().isEmpty()) {
@@ -82,18 +81,16 @@ public class SongService {
     }
 
     public SongResponse updateSong(Long id, SongRequest request) {
-        Song existSong = songRepository.getSongById(id);
+        Song existSong = songRepository.getSongById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
         songMapper.updateSongFromRequest(request, existSong);
 
         if (existSong.getGenre() == null) {
             existSong.setGenre(Genre.OTHER);
         }
 
-        if (request.getIsPremium() != null) {
-            existSong.setPremium(Boolean.parseBoolean(request.getIsPremium()));
-        } else {
-            existSong.setPremium(false);
-        }
+        // check premium user
+
 
         if (request.getAudioFile() != null) {
             try {
@@ -119,6 +116,10 @@ public class SongService {
             existSong.setArtists(artists);
         }
 
+        if (request.getIsPremium() != null) {
+            boolean isPremium = Boolean.parseBoolean(request.getIsPremium());
+            existSong.setPremium(isPremium);
+        }
         // change album association if albumId is provided
         if (request.getAlbumId() != null) {
             existSong.setAlbum(albumRepository.getAlbumById(request.getAlbumId())
@@ -138,6 +139,7 @@ public class SongService {
         }
 
         return songMapper.toSongResponse(songRepository.save(existSong));
+
     }
 
     public void deleteSong(Long id) {
@@ -145,8 +147,8 @@ public class SongService {
     }
 
     public Song getSongEntityById(Long id) {
-        return songRepository.findById(id)
-                .orElse(null);
+        return songRepository.getSongById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
     }
 
     // get song by createdBy
@@ -162,6 +164,4 @@ public class SongService {
         Page<Song> songs = songRepository.findByCreatedBy(username, pageable);
         return songs.map(songMapper::toSongResponse);
     }
-
-
 }
