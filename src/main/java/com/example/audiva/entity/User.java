@@ -1,10 +1,12 @@
 package com.example.audiva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -23,9 +25,12 @@ public class User {
     String firstName;
     String lastName;
     LocalDate dob;
-    Boolean isPremium;
 
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<UserPremium> premiumSubscriptions;
 }
 

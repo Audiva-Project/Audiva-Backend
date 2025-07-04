@@ -29,6 +29,7 @@ public class SongService {
     SongMapper songMapper;
     StorageService storageService;
     ArtistRepository artistRepository;
+    PremiumService premiumService;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
         return songRepository.findAll(pageable)
@@ -51,8 +52,6 @@ public class SongService {
 
         if (request.getIsPremium() != null) {
             song.setPremium(Boolean.parseBoolean(request.getIsPremium()));
-        } else {
-            song.setPremium(false);
         }
 
         if (request.getArtistIds() != null && !request.getArtistIds().isEmpty()) {
@@ -74,11 +73,8 @@ public class SongService {
             existSong.setGenre(Genre.OTHER);
         }
 
-        if (request.getIsPremium() != null) {
-            existSong.setPremium(Boolean.parseBoolean(request.getIsPremium()));
-        } else {
-            existSong.setPremium(false);
-        }
+        // check premium user
+
 
         if (request.getAudioFile() != null) {
             try {
@@ -102,6 +98,11 @@ public class SongService {
                 throw new AppException(ErrorCode.ARTIST_NOT_FOUND);
             }
             existSong.setArtists(artists);
+        }
+
+        if (request.getIsPremium() != null) {
+            boolean isPremium = Boolean.parseBoolean(request.getIsPremium());
+            existSong.setPremium(isPremium);
         }
 
         return songMapper.toSongResponse(songRepository.save(existSong));

@@ -3,7 +3,9 @@ package com.example.audiva.service;
 import com.example.audiva.dto.request.UserCreationRequest;
 import com.example.audiva.dto.request.UserUpdateRequest;
 import com.example.audiva.dto.response.UserResponse;
+import com.example.audiva.entity.Premium;
 import com.example.audiva.entity.User;
+import com.example.audiva.enums.PaymentStatus;
 import com.example.audiva.enums.Role;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
@@ -56,15 +58,18 @@ public class UserService {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
+
         User user = userMapper.toUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-        user.setIsPremium(false);
-//        user.setRoles(roles);
+
+        // Gán role mặc định là USER
+        var roles = roleRepository.findAllById(List.of(Role.USER.name()));
+        user.setRoles(new HashSet<>(roles));
+
         return userMapper.toUserResponse(userRepository.save(user));
     }
+
 
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(
