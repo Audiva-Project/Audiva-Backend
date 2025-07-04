@@ -32,5 +32,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<UserPremium> premiumSubscriptions;
+
+    @OneToMany(mappedBy = "user")
+    Set<Playlist> playlists;
 }
 

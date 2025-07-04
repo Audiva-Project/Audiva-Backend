@@ -50,7 +50,7 @@ public class AlbumController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<AlbumResponse> updateAlbum(@PathVariable Long id,
-                                                  @ModelAttribute @Valid AlbumRequest request) {
+                                                  @Valid @ModelAttribute  AlbumRequest request) {
         return ApiResponse.<AlbumResponse>builder()
                 .result(albumService.updateAlbum(id, request))
                 .build();

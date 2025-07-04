@@ -27,7 +27,7 @@ public class SecurityConfig {
     @Autowired
     CustomJwtDecoder customJwtDecoder;
 
-    private final String[] PUBLIC_MATCHERS = {"/users", "/auth/*"};
+    private final String[] PUBLIC_MATCHERS = {"/users", "/auth/*", "/api/playlists/**", "/api/history/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,9 +36,10 @@ public class SecurityConfig {
                         request.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/audio/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                                .requestMatchers("/api/albums/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/songs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/premium/payment-return").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/albums/**").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder)

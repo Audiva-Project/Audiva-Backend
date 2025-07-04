@@ -46,7 +46,6 @@ public class Song extends BaseEntity {
     private List<FavoriteSong> favoriteSongs;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
-
     private List<ListeningHistory> listeningHistories;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
@@ -58,6 +57,7 @@ public class Song extends BaseEntity {
             joinColumns = @JoinColumn(name = "song_id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
+    @JsonIgnore
     private List<Artist> artists;
 
     @Column(name = "is_premium", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)

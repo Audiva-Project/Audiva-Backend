@@ -12,5 +12,7 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     @Query("SELECT a FROM Album a LEFT JOIN FETCH a.songs WHERE a.id = :id")
     Optional<Album> findWithSongsById(@Param("id") Long id);
 
+    Optional<Album> getAlbumById(Long id); // This method is redundant if you use findWithSongsById, but kept for compatibility
+
 }
 

@@ -39,8 +39,10 @@ public enum ErrorCode {
     INVALID_PREMIUM_PRICE(1023, "Invalid premium price", HttpStatus.BAD_REQUEST),
     PREMIUM_EXISTED(1024, "Premium existed", HttpStatus.BAD_REQUEST),
     PREMIUM_ALREADY_EXISTED(1025, "Premium already existed", HttpStatus.BAD_REQUEST),
-    ;
 
+    // PLAYLIST Error code
+    PLAYLIST_EXISTED(1021, "Playlist existed", HttpStatus.BAD_REQUEST),
+    INVALID_PLAYLIST(1022, "Invalid Playlist", HttpStatus.NOT_FOUND);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
