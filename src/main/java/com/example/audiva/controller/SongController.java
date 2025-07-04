@@ -34,7 +34,7 @@ public class SongController {
 
     @GetMapping
     public Page<SongResponse> getAllSongs(
-            @PageableDefault(size = 4, page = 0) Pageable pageable
+            @PageableDefault(size = 8, page = 0) Pageable pageable
     ) {
         return songService.getAllSong(pageable);
     }

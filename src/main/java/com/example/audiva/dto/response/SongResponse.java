@@ -19,6 +19,7 @@ public class SongResponse {
     private String thumbnailUrl;
     private boolean isPremium;
     private String createdBy;
+    private Long playCount;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;

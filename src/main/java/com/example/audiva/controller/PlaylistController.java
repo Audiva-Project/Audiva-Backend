@@ -74,8 +74,8 @@ public class PlaylistController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<PlaylistResponse> createPlaylist(@ModelAttribute @Valid PlaylistRequest request)throws IOException {
-                return ApiResponse.<PlaylistResponse>builder()
+    public ApiResponse<PlaylistResponse> createPlaylist(@ModelAttribute @Valid PlaylistRequest request) throws IOException {
+        return ApiResponse.<PlaylistResponse>builder()
                 .result(playlistService.createPlaylist(request))
                 .build();
     }
@@ -88,6 +88,46 @@ public class PlaylistController {
                 .result(playlistService.updatePlaylist(id, request))
                 .build();
     }
+
+    @DeleteMapping("/{playlistId}/remove/{songId}")
+    public ApiResponse<PlaylistResponse> deleteSongFromPlaylist(
+            @PathVariable Long playlistId,
+            @PathVariable Long songId
+    ) {
+        Authentication authentication = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        PlaylistResponse playlistResponse = playlistService.deleteSongFromPlaylist(
+                playlistId,
+                songId,
+                user.getId()
+        );
+        return ApiResponse.<PlaylistResponse>builder()
+                .result(playlistResponse)
+                .code(0)
+                .message("Delete song from playlist success")
+                .build();
+    }
+
+    @DeleteMapping("/{playlistId}")
+    public ApiResponse<Void> deletePlaylist(@PathVariable Long playlistId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        playlistService.deletePlaylist(playlistId, user.getId());
+
+        return ApiResponse.<Void>builder()
+                .code(0)
+                .message("Delete playlist success")
+                .build();
+    }
+
 
 //    // 👉 Endpoint test: thêm bài hát ID 1 vào playlist ID 1
 //    @GetMapping("/test-add")

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface SongMapper {
 //    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "playCount", target = "playCount")
     SongResponse toSongResponse(Song song);
 
     @Mapping(target = "listeningHistories", ignore = true)
