@@ -3,7 +3,6 @@ package com.example.audiva.service;
 import com.example.audiva.dto.request.AlbumRequest;
 import com.example.audiva.dto.response.AlbumResponse;
 import com.example.audiva.entity.Album;
-import com.example.audiva.entity.Artist;
 import com.example.audiva.entity.Song;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
@@ -11,7 +10,6 @@ import com.example.audiva.mapper.AlbumMapper;
 import com.example.audiva.repository.AlbumRepository;
 import com.example.audiva.repository.ArtistRepository;
 import com.example.audiva.repository.SongRepository;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -49,12 +47,6 @@ public class AlbumService {
     public AlbumResponse createAlbum(AlbumRequest request) throws IOException {
         Album album = albumMapper.toAlbum(request);
 
-        if (request.getArtistId() != null) {
-            Artist artist = artistRepository.findById(request.getArtistId())
-                    .orElseThrow(() -> new AppException(ErrorCode.ARTIST_NOT_FOUND));
-            album.setArtist(artist);
-        }
-
         if (request.getThumbnailFile() != null && !request.getThumbnailFile().isEmpty()) {
             album.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
         }
@@ -87,12 +79,6 @@ public class AlbumService {
                 .orElseThrow(() -> new AppException(ErrorCode.ALBUM_NOT_FOUND));
 
         albumMapper.updateAlbumFromRequest(request, existAlbum);
-
-        if (request.getArtistId() != null) {
-            Artist artist = artistRepository.findById(request.getArtistId())
-                    .orElseThrow(() -> new AppException(ErrorCode.ARTIST_NOT_FOUND));
-            existAlbum.setArtist(artist);
-        }
 
         if (request.getThumbnailFile() != null && !request.getThumbnailFile().isEmpty()) {
             try {

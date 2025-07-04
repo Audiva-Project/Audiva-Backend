@@ -163,5 +163,16 @@ public class SongService {
         return songs.map(songMapper::toSongResponse);
     }
 
+    public void increasePlayCount (Long songId) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(()-> new AppException(ErrorCode.SONG_NOT_FOUND));
 
+        if (song.getPlayCount() == null) {
+            song.setPlayCount(1L);
+        } else {
+            song.setPlayCount(song.getPlayCount() + 1);
+        }
+
+        songRepository.save(song);
+    }
 }

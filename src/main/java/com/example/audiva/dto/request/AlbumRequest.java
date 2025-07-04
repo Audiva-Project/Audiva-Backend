@@ -10,7 +10,6 @@ import java.util.List;
 public class AlbumRequest {
     private String title;
     private LocalDate releaseDate;
-    private Long artistId;
     private MultipartFile thumbnailFile;
     private List<Long> songIds;
 }

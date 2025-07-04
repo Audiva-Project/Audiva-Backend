@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/api/history/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/history/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/songs/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/songs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/playlists/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/playlists/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/albums/**").permitAll()

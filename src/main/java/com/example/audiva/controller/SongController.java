@@ -99,4 +99,13 @@ public class SongController {
                 .result(songService.getSongsCreatedByMe(pageable))
                 .build();
     }
+
+    // increase play count
+    @PostMapping("/{id}/play")
+    public ApiResponse<Void> increasePlayCount(@PathVariable Long id) {
+        songService.increasePlayCount(id);
+        return ApiResponse.<Void>builder()
+                .message("Play count increased successfully")
+                .build();
+    }
 }
