@@ -17,7 +17,7 @@ public class SongResponse {
     private String genre;
     private String audioUrl;
     private String thumbnailUrl;
-    private boolean isPremium;
+    private boolean premium;
     private String createdBy;
     private Long playCount;
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
-    Song getSongById(Long id);
+    Optional<Song> getSongById(Long id);
 
     Page<Song> findAll(Pageable pageable);
 
