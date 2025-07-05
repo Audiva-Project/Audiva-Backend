@@ -1,5 +1,6 @@
 package com.example.audiva.service;
 
+import com.example.audiva.dto.request.NotificationRequest;
 import com.example.audiva.dto.request.PremiumRequest;
 import com.example.audiva.entity.Premium;
 import com.example.audiva.entity.User;
@@ -33,6 +34,7 @@ public class PremiumService {
     UserPremiumRepository userPremiumRepository;
     VNPayService vnPayService;
     PremiumMapper premiumMapper;
+    NotificationService notificationService;
 
     public String buyPremium(UUID userId, String premiumName, HttpServletRequest request) {
         User user = userRepository.findById(String.valueOf(userId))
@@ -81,13 +83,35 @@ public class PremiumService {
         UserPremium userPremium = userPremiumRepository.findByPaymentRef(paymentRef)
                 .orElseThrow(() -> new AppException(ErrorCode.PREMIUM_NOT_EXISTED));
 
+        User user = userPremium.getUser();
+        Premium premium = userPremium.getPremium();
+
         if ("00".equals(vnp_ResponseCode)) {
             userPremium.setStatus(PaymentStatus.SUCCESS);
             userPremium.setStartDate(LocalDateTime.now());
             userPremium.setEndDate(LocalDateTime.now().plusDays(userPremium.getPremium().getDuration()));
+
+            notificationService.createNotification(
+                    user,
+                    "Mua gói Premium thành công",
+                    String.format("Bạn đã mua thành công gói Audiva %s. Hạn sử dụng đến ngày %s.",
+                            premium.getName(),
+                            userPremium.getEndDate().toLocalDate()
+                    )
+            );
         } else {
             userPremium.setStatus(PaymentStatus.FAILED);
+
+            notificationService.createNotification(
+                    user,
+                    "Mua gói Premium thất bại",
+                    String.format("Thanh toán gói Audiva %s không thành công. Vui lòng thử lại.",
+                            premium.getName()
+                    )
+            );
         }
+
+        // Gửi thông báo cho người dùng
 
         userPremiumRepository.save(userPremium);
     }
