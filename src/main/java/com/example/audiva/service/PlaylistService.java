@@ -95,7 +95,7 @@ public class PlaylistService {
         return playlist.getPlaylistSongs().stream()
                 .sorted(Comparator.comparingInt(PlaylistSong::getOrderInPlaylist))
                 .map(PlaylistSong::getSong) // Lấy Song entity
-                .map(songMapper::toSongResponse) // <<< SỬ DỤNG SONGMAPPER ĐỂ ÁNH XẠ
+                .map(songMapper::toSongResponse)
                 .toList();
     }
 
@@ -160,4 +160,40 @@ public class PlaylistService {
         Playlist updated = playlistRepository.save(playlist);
         return playlistMapper.toPlaylistResponse(updated);
     }
+
+    public PlaylistResponse deleteSongFromPlaylist(Long playlistId, Long songId, String userId) {
+        Playlist playlist = playlistRepository.findByIdAndUserId(playlistId, userId)
+                .orElseThrow(() -> new RuntimeException("Playlist not found or not owned by user"));
+
+        PlaylistSongId playlistSongId = new PlaylistSongId(playlistId, songId);
+
+        PlaylistSong playlistSong = playlistSongRepository.findById(playlistSongId)
+                .orElseThrow(() -> new RuntimeException("Song not found in playlist"));
+
+        playlistSongRepository.delete(playlistSong);
+
+        playlist.getPlaylistSongs().removeIf(ps -> ps.getSong().getId().equals(songId));
+
+        int order = 1;
+        for (PlaylistSong ps : playlist.getPlaylistSongs()) {
+            ps.setOrderInPlaylist(order++);
+        }
+
+        playlistRepository.save(playlist);
+
+        return playlistMapper.toPlaylistResponse(playlist);
+    }
+
+    @Transactional
+    public void deletePlaylist(Long playlistId, String userId) {
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_PLAYLIST));
+
+        if (!playlist.getUser().getId().equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        playlistRepository.delete(playlist);
+    }
+
 }

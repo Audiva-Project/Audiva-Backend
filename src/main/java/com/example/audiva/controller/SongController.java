@@ -34,7 +34,7 @@ public class SongController {
 
     @GetMapping
     public Page<SongResponse> getAllSongs(
-            @PageableDefault(size = 4, page = 0) Pageable pageable
+            @PageableDefault(size = 8, page = 0) Pageable pageable
     ) {
         return songService.getAllSong(pageable);
     }
@@ -97,6 +97,15 @@ public class SongController {
             @PageableDefault(size = 10) Pageable pageable) {
         return ApiResponse.<Page<SongResponse>>builder()
                 .result(songService.getSongsCreatedByMe(pageable))
+                .build();
+    }
+
+    // increase play count
+    @PostMapping("/{id}/play")
+    public ApiResponse<Void> increasePlayCount(@PathVariable Long id) {
+        songService.increasePlayCount(id);
+        return ApiResponse.<Void>builder()
+                .message("Play count increased successfully")
                 .build();
     }
 }

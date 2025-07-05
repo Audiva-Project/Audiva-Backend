@@ -14,7 +14,6 @@ import java.util.List;
 public class SongRequest {
     String title;
     String genre;
-    Integer duration;
     MultipartFile audioFile;
     MultipartFile thumbnailFile;
     String isPremium;

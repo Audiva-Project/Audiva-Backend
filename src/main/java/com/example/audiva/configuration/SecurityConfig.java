@@ -38,6 +38,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/songs/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/songs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/playlists/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/playlists/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/albums/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/premium/payment-return").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/albums/**").permitAll()
                                 .anyRequest().authenticated());

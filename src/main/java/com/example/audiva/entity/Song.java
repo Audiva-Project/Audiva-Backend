@@ -28,9 +28,6 @@ public class Song extends BaseEntity {
     @Column(name = "genre")
     private Genre genre;
 
-    @Column(name = "duration")
-    private Integer duration;
-
     @Column(name = "audio_url")
     private String audioUrl;
 
@@ -43,12 +40,10 @@ public class Song extends BaseEntity {
     private Album album;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
-    private List<FavoriteSong> favoriteSongs;
-
-    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private List<ListeningHistory> listeningHistories;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<PlaylistSong> playlistSongs;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -62,4 +57,7 @@ public class Song extends BaseEntity {
 
     @Column(name = "is_premium", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
     private boolean premium;
+
+    @Column(name = "play_count")
+    private Long playCount = 0L;
 }

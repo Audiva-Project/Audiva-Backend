@@ -15,11 +15,11 @@ public class SongResponse {
     private Long id;
     private String title;
     private String genre;
-    private Integer duration;
     private String audioUrl;
     private String thumbnailUrl;
     private boolean premium;
     private String createdBy;
+    private Long playCount;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;

@@ -27,6 +27,7 @@ public class Album extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
+//    @JsonBackReference
     private Artist artist;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
