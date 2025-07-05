@@ -42,7 +42,11 @@ public enum ErrorCode {
 
     // PLAYLIST Error code
     PLAYLIST_EXISTED(1021, "Playlist existed", HttpStatus.BAD_REQUEST),
-    INVALID_PLAYLIST(1022, "Invalid Playlist", HttpStatus.NOT_FOUND);
+    INVALID_PLAYLIST(1022, "Invalid Playlist", HttpStatus.NOT_FOUND),
+
+    // NOTIFICATIONS Error code
+    NOTIFICATIONS_NOT_FOUND(1023, "Notifications not found", HttpStatus.NOT_FOUND),
+    NOTIFICATION_NOT_FOUND(1024, "Notification not found", HttpStatus.NOT_FOUND);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
