@@ -1,9 +1,7 @@
 package com.example.audiva.controller;
 
-import com.example.audiva.dto.request.AlbumRequest;
 import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.PlaylistRequest;
-import com.example.audiva.dto.response.AlbumResponse;
 import com.example.audiva.dto.response.PlaylistResponse;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.User;
@@ -14,12 +12,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
