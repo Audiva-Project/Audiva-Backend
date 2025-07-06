@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ArtistMapper {
     Artist toArtist(ArtistRequest artistRequest);
@@ -16,4 +18,6 @@ public interface ArtistMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateArtistFromRequest(ArtistRequest request, @MappingTarget Artist artist);
+
+    List<ArtistResponse> toArtistResponseList(List<Artist> artists);
 }

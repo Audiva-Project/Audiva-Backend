@@ -44,6 +44,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/api/albums/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/premium/payment-return").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/albums/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/search/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"api/history/**").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJwtDecoder)
