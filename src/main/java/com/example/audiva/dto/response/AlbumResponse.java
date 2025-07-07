@@ -7,15 +7,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
 public class AlbumResponse {
     private Long id;
     private String title;
     private String thumbnailUrl;
     private LocalDate releaseDate;
-//    private Long artistId;
-//    private String artistName;
     private List<SongResponse> songs;
-
     private ArtistSummary artist;
 
     @Data
