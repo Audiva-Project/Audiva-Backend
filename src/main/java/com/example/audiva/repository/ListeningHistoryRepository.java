@@ -14,6 +14,9 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     @Query("SELECT lh FROM ListeningHistory lh WHERE lh.anonymousId = :anonymousId")
     List<ListeningHistory> findByAnonymousId(@Param("anonymousId") String anonymousId);
 
+    @Query("SELECT lh FROM ListeningHistory lh WHERE lh.user.id = :userId AND lh.song.id = :songId")
     Optional<ListeningHistory> findByUserIdAndSongId(String userId, Long songId);
+
+    @Query("SELECT lh FROM ListeningHistory lh WHERE lh.anonymousId = :anonymousId AND lh.song.id = :songId")
     Optional<ListeningHistory> findByAnonymousIdAndSongId(String anonymousId, Long songId);
 }
