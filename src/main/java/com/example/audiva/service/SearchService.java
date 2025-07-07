@@ -83,16 +83,29 @@ public class SearchService {
 
     // ----------- Tìm kiếm Tất cả -----------
     public SearchResponse searchAll(String keyword) {
-        List<SongResponse> songs = songRepository.findByTitleContainingIgnoreCase(keyword)
-                .stream().map(songMapper::toSongResponse).toList();
+        // Tìm bài hát theo title
+        List<Song> songsByTitle = songRepository.findByTitleContainingIgnoreCase(keyword);
 
+        // Tìm nghệ sĩ theo tên và lấy bài hát
+        List<Artist> artistsByName = artistRepository.findByNameContainingIgnoreCase(keyword);
+        List<Song> songsByArtistName = new ArrayList<>();
+        artistsByName.forEach(artist -> songsByArtistName.addAll(artist.getSongs()));
+
+        // Gộp, bỏ trùng
+        Set<Song> uniqueSongs = new HashSet<>();
+        uniqueSongs.addAll(songsByTitle);
+        uniqueSongs.addAll(songsByArtistName);
+
+        List<SongResponse> songs = uniqueSongs.stream()
+                .map(songMapper::toSongResponse)
+                .toList();
+
+        // Albums
         List<AlbumResponse> albums = albumRepository.findDistinctBySongs_TitleContainingIgnoreCase(keyword)
                 .stream().map(albumMapper::toAlbumResponse).toList();
 
-        List<Artist> artistsByName = artistRepository.findByNameContainingIgnoreCase(keyword);
+        // Nghệ sĩ (gộp nghệ sĩ theo tên & nghệ sĩ theo bài hát)
         List<Artist> artistsBySong = artistRepository.findDistinctBySongs_TitleContainingIgnoreCase(keyword);
-
-        // Gộp, bỏ trùng
         Set<Artist> uniqueArtists = new HashSet<>();
         uniqueArtists.addAll(artistsByName);
         uniqueArtists.addAll(artistsBySong);
@@ -103,5 +116,4 @@ public class SearchService {
 
         return new SearchResponse(songs, artistResponses, albums);
     }
-
 }
