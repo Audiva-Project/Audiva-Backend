@@ -1,11 +1,14 @@
 package com.example.audiva.controller;
 
+import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.ListeningHistoryRequest;
 import com.example.audiva.dto.response.ListeningHistoryResponse;
 import com.example.audiva.service.ListeningHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,8 @@ public class ListeningHistoryController {
     @PostMapping
     public ResponseEntity<?> saveHistory(@RequestBody ListeningHistoryRequest req, Authentication auth) {
         if (auth != null && auth.isAuthenticated()) {
-            JwtAuthenticationToken jwtAuth = (JwtAuthenticationToken) auth;
-            String userId = jwtAuth.getToken().getClaim("userId");
-            listeningHistoryService.save(userId, req.getSongId(), null);
+            String userName = auth.getName();
+            listeningHistoryService.save(userName, req.getSongId(), null);
         } else {
             listeningHistoryService.save(null, req.getSongId(), req.getAnonymousId());
         }
@@ -35,12 +37,26 @@ public class ListeningHistoryController {
             Authentication auth) {
 
         if (auth != null && auth.isAuthenticated()) {
-            String userId = ((JwtAuthenticationToken) auth).getToken().getClaim("userId");
-            return ResponseEntity.ok(listeningHistoryService.getHistoryForUser(userId));
+            String userName = auth.getName();
+            return ResponseEntity.ok(listeningHistoryService.getHistoryForUser(userName));
         } else if (anonymousId != null) {
             return ResponseEntity.ok(listeningHistoryService.getHistoryForAnonymous(anonymousId));
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    // merge request
+    @PostMapping("/merge")
+    public ApiResponse<Void> mergeAnonymousHistory(
+            @RequestBody ListeningHistoryRequest request
+    ) {
+        listeningHistoryService.mergeAnonymousHistory(request.getAnonymousId());
+
+        return ApiResponse.<Void>builder()
+                .result(null)
+                .message("Merge anonymous history success")
+                .build();
+    }
+
 }
