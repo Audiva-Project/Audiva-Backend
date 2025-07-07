@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AlbumRepository extends JpaRepository<Album, Long> {
@@ -14,5 +15,10 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     Optional<Album> getAlbumById(Long id); // This method is redundant if you use findWithSongsById, but kept for compatibility
 
+    List<Album> findByTitleContainingIgnoreCase(String title);
+
+    List<Album> findByArtist_NameContainingIgnoreCase(String artistName);
+
+    List<Album> findDistinctBySongs_TitleContainingIgnoreCase(String keyword);
 }
 

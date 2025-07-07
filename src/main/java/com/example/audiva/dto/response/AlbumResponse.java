@@ -1,5 +1,6 @@
 package com.example.audiva.dto.response;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,7 +12,16 @@ public class AlbumResponse {
     private String title;
     private String thumbnailUrl;
     private LocalDate releaseDate;
-    private Long artistId;
-    private String artistName;
+//    private Long artistId;
+//    private String artistName;
     private List<SongResponse> songs;
+
+    private ArtistSummary artist;
+
+    @Data
+    @Builder
+    public static class ArtistSummary {
+        private Long id;
+        private String name;
+    }
 }
