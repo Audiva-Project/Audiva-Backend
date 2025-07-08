@@ -27,7 +27,9 @@ public class SecurityConfig {
     @Autowired
     CustomJwtDecoder customJwtDecoder;
 
-    private final String[] PUBLIC_POST_MATCHERS = {"/users", "/auth/*", "/api/playlists/**", "/api/history/**"};
+    private final String[] PUBLIC_POST_MATCHERS = {"/users", "/auth/*",
+            "/api/playlists/**", "/api/history/**",
+    "/api/songs/**"};
 
     private static final String[] PUBLIC_GET_MATCHERS = {
             "/audio/**", "/users", "/artists/**", "/api/songs/**",

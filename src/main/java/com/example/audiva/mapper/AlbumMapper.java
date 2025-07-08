@@ -20,8 +20,6 @@ public interface AlbumMapper {
     @Mapping(target = "thumbnailUrl", ignore = true)
     Album toAlbum(AlbumRequest request);
 
-    //    @Mapping(source = "artist.id", target = "artistId")
-//    @Mapping(source = "artist.name", target = "artistName")
     @Mapping(target = "songs", source = "songs")
     @Mapping(target = "artist",
             expression = "java(album.getArtist() != null ? toArtistSummary(album.getArtist()) : null)")

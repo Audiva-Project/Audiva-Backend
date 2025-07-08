@@ -20,6 +20,7 @@ public class SongResponse {
     private boolean premium;
     private String createdBy;
     private Long playCount;
+    private Long favoriteCount;
 
     private AlbumSummary album;
     private List<ArtistSummary> artists;
