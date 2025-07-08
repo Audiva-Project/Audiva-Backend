@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -56,7 +57,7 @@ public class SongController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<SongResponse> updateSong(@PathVariable Long id
-            ,@Valid @ModelAttribute SongRequest song) {
+            , @Valid @ModelAttribute SongRequest song) {
         return ApiResponse.<SongResponse>builder()
                 .result(songService.updateSong(id, song))
                 .build();
@@ -69,7 +70,7 @@ public class SongController {
             return ResponseEntity.notFound().build();
         }
 
-        String audioStoragePath = "D:/Audiva-Backend/uploads/mp3/";
+        String audioStoragePath = Paths.get("uploads/mp3").toAbsolutePath().toString() + File.separator;
         String filePath = audioStoragePath + song.getAudioUrl();
         File file = new File(filePath);
         if (!file.exists()) {
