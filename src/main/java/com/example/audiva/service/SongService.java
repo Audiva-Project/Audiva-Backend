@@ -3,6 +3,7 @@ package com.example.audiva.service;
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Artist;
+import com.example.audiva.entity.Lyrics;
 import com.example.audiva.entity.Song;
 import com.example.audiva.enums.Genre;
 import com.example.audiva.exception.AppException;
@@ -10,7 +11,9 @@ import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.repository.AlbumRepository;
 import com.example.audiva.repository.ArtistRepository;
+import com.example.audiva.repository.LyricsRepository;
 import com.example.audiva.repository.SongRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +38,7 @@ public class SongService {
     ArtistRepository artistRepository;
     PremiumService premiumService;
     AlbumRepository albumRepository;
+    LyricsRepository lyricsRepository;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
         Page<Song> songs = songRepository.findAll(pageable);
@@ -177,4 +181,28 @@ public class SongService {
 
         songRepository.save(song);
     }
+
+    public Optional<Lyrics> getLyricsBySongId(Long id) {
+        return songRepository.findById(id)
+                .map(Song::getLyrics);
+    }
+
+    @Transactional
+    public Lyrics updateLyrics(Long songId, String newLyricsContent) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
+
+        Lyrics lyrics = song.getLyrics();
+        if (lyrics == null) {
+            // Nếu chưa có, tạo mới
+            lyrics = new Lyrics();
+            lyrics.setSong(song);
+        }
+
+        lyrics.setContent(newLyricsContent);
+        lyricsRepository.save(lyrics);
+
+        return lyrics;
+    }
+
 }

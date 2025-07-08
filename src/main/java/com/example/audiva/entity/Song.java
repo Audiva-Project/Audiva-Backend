@@ -60,4 +60,7 @@ public class Song extends BaseEntity {
 
     @Column(name = "play_count")
     private Long playCount = 0L;
+
+    @OneToOne(mappedBy = "song", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Lyrics lyrics;
 }

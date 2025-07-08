@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/songs")
@@ -109,4 +110,24 @@ public class SongController {
                 .message("Play count increased successfully")
                 .build();
     }
+
+    @GetMapping("/{id}/lyrics")
+    public ResponseEntity<String> getLyricsBySongId(@PathVariable Long id) {
+        return songService.getLyricsBySongId(id)
+                .map(lyrics -> ResponseEntity.ok(lyrics.getContent()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/lyrics")
+    public ApiResponse<String> updateLyrics(
+            @PathVariable Long id,
+            @RequestBody String newLyricsContent) {
+
+        songService.updateLyrics(id, newLyricsContent);
+
+        return ApiResponse.<String>builder()
+                .result("Lyrics updated successfully")
+                .build();
+    }
+
 }
