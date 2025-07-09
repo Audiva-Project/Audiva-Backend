@@ -1,5 +1,6 @@
 package com.example.audiva.dto.response;
 
+import com.example.audiva.entity.Premium;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class UserPremiumResponse {
     private String status;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private String premiumName;
 }

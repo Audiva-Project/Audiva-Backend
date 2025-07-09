@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ListeningHistoryRepository extends JpaRepository<ListeningHistory, Long> {
+    // sort by listenedAt desc
+    @Query("SELECT lh FROM ListeningHistory lh WHERE lh.user.id = :userId ORDER BY lh.listenedAt DESC")
     List<ListeningHistory> findByUserId(String userId);
 
-    @Query("SELECT lh FROM ListeningHistory lh WHERE lh.anonymousId = :anonymousId")
+    @Query("SELECT lh FROM ListeningHistory lh WHERE lh.anonymousId = :anonymousId ORDER BY lh.listenedAt DESC")
     List<ListeningHistory> findByAnonymousId(@Param("anonymousId") String anonymousId);
 
     @Query("SELECT lh FROM ListeningHistory lh WHERE lh.user.id = :userId AND lh.song.id = :songId")

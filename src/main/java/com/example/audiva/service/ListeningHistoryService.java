@@ -35,7 +35,6 @@ public class ListeningHistoryService {
     ListeningHistoryMapper listeningHistoryMapper;
 
     public void save(String userName, Long songId, String anonymousId) {
-        boolean exists;
         User user = null;
 
         if (userName != null) {
@@ -44,17 +43,25 @@ public class ListeningHistoryService {
         }
 
         if (userName != null) {
-            exists = listeningHistoryRepository
-                    .findByUserIdAndSongId(user.getId(), songId)
-                    .isPresent();
+            Optional<ListeningHistory> listeningHistoryOptional = listeningHistoryRepository
+                    .findByUserIdAndSongId(user.getId(), songId);
+            // update listenedAt if exists
+            if (listeningHistoryOptional.isPresent()) {
+                ListeningHistory listeningHistory = listeningHistoryOptional.get();
+                listeningHistory.setListenedAt(LocalDateTime.now());
+                listeningHistoryRepository.save(listeningHistory);
+                return;
+            }
         } else {
-            exists = listeningHistoryRepository
-                    .findByAnonymousIdAndSongId(anonymousId, songId)
-                    .isPresent();
-        }
-
-        if (exists) {
-            return;
+            Optional<ListeningHistory> listeningHistoryOptional = listeningHistoryRepository
+                    .findByAnonymousIdAndSongId(anonymousId, songId);
+            // update listenedAt if exists
+            if (listeningHistoryOptional.isPresent()) {
+                ListeningHistory listeningHistory = listeningHistoryOptional.get();
+                listeningHistory.setListenedAt(LocalDateTime.now());
+                listeningHistoryRepository.save(listeningHistory);
+                return;
+            }
         }
 
         ListeningHistory history = new ListeningHistory();
@@ -64,6 +71,7 @@ public class ListeningHistoryService {
 
         if (user != null) {
             history.setUser(user);
+            history.setAnonymousId(null);
         } else {
             history.setUser(null);
             history.setAnonymousId(anonymousId);
@@ -98,20 +106,20 @@ public class ListeningHistoryService {
         for (ListeningHistory anonymousHistory : anonymousHistories) {
             Long songId = anonymousHistory.getSong().getId();
 
-            // 2. Kiểm tra user đã có record nghe bài này chưa
+            // Kiểm tra user đã có record nghe bài này chưa
             Optional<ListeningHistory> existingUserHistory = listeningHistoryRepository.findByUserIdAndSongId(user.getId(), songId);
 
             if (existingUserHistory.isPresent()) {
                 ListeningHistory listeningHistory = existingUserHistory.get();
 
-                // 3. Nếu anonymous nghe gần đây hơn → update listenedAt
+                // Nếu anonymous nghe gần đây hơn → update listenedAt
                 if (anonymousHistory.getListenedAt().isAfter(listeningHistory.getListenedAt())) {
                     listeningHistory.setListenedAt(anonymousHistory.getListenedAt());
                     listeningHistoryRepository.save(listeningHistory);
                 }
-                
+
             } else {
-                // 5. Nếu user chưa nghe bài này → gán vào user
+                // Nếu user chưa nghe bài này → gán vào user
                 anonymousHistory.setUser(user);
 //                anonymousHistory.setAnonymousId(null);
                 listeningHistoryRepository.save(anonymousHistory);

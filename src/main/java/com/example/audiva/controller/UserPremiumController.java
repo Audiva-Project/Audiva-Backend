@@ -24,6 +24,4 @@ public class UserPremiumController {
         String userName = authentication.getName();
         return userPremiumService.getUserPremiumByUsername(userName);
     }
-
-
 }
