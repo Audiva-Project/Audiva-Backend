@@ -1,6 +1,7 @@
 package com.example.audiva.service;
 
 import com.example.audiva.dto.response.UserPremiumResponse;
+import com.example.audiva.entity.Premium;
 import com.example.audiva.entity.User;
 import com.example.audiva.entity.UserPremium;
 import com.example.audiva.enums.PaymentStatus;
@@ -27,10 +28,11 @@ public class UserPremiumService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         return userPremiumRepository.findByUserId(user.getId())
-                .map(premium -> UserPremiumResponse.builder()
-                        .status(PaymentStatus.SUCCESS.name())
-                        .startDate(premium.getStartDate())
-                        .endDate(premium.getEndDate())
+                .map(userPremium -> UserPremiumResponse.builder()
+                        .status(userPremium.getStatus().name())
+                        .startDate(userPremium.getStartDate())
+                        .endDate(userPremium.getEndDate())
+                        .premiumName(userPremium.getPremium().getName())
                         .build())
                 .orElse(UserPremiumResponse.builder()
                         .status(PaymentStatus.NOT_SUBSCRIBED.name())

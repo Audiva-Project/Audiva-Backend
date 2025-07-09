@@ -5,8 +5,6 @@ import com.example.audiva.dto.request.NotificationRequest;
 import com.example.audiva.dto.response.NotificationResponse;
 import com.example.audiva.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
