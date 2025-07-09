@@ -36,7 +36,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_GET_MATCHERS = {
             "/audio/**", "/users", "/artists/**", "/api/songs/**",
             "/api/premium/payment-return", "/api/albums/**",
-            "/api/history/**", "/api/playlists"
+            "/api/history/**", "/api/playlists", "/api/search/**"
     };
 
     @Bean

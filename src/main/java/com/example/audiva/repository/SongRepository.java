@@ -14,9 +14,15 @@ import java.util.Optional;
 public interface SongRepository extends JpaRepository<Song, Long> {
     Optional<Song> getSongById(Long id);
 
-    // sort by playCount
+    // sort by
     @Query("SELECT s FROM Song s ORDER BY s.playCount DESC")
     Page<Song> findAll(Pageable pageable);
 
     Page<Song> findByCreatedBy(String createdBy, Pageable pageable);
+
+    List<Song> findByTitleContainingIgnoreCase(String keyword);
+
+    List<Song> findByArtists_NameContainingIgnoreCase(String artistName);
+
+    List<Song> findByAlbum_TitleContainingIgnoreCase(String albumTitle);
 }
