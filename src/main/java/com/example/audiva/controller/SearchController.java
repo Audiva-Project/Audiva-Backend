@@ -51,7 +51,7 @@ public class SearchController {
 
     // ----------- Tìm kiếm Album -----------
     @GetMapping("/albums")
-    public List<AlbumResponse> searchAlbumsByName(@RequestParam String title) {
+    public List<AlbumResponse> searchAlbumsByName(@RequestParam("query") String title) {
         return searchService.searchAlbumsByName(title);
     }
 
