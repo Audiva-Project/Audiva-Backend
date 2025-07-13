@@ -77,21 +77,19 @@ public class SearchService {
 
     public List<AlbumResponse> searchAlbumsByArtist(String artistName) {
         return albumMapper.toAlbumResponseList(
-                albumRepository.findByArtist_NameContainingIgnoreCase(artistName)
+                albumRepository.searchAlbumsByArtistName(artistName)
         );
     }
 
     // ----------- Tìm kiếm Tất cả -----------
     public SearchResponse searchAll(String keyword) {
-        // Tìm bài hát theo title
+        // --- 1. Songs ---
         List<Song> songsByTitle = songRepository.findByTitleContainingIgnoreCase(keyword);
 
-        // Tìm nghệ sĩ theo tên và lấy bài hát
         List<Artist> artistsByName = artistRepository.findByNameContainingIgnoreCase(keyword);
         List<Song> songsByArtistName = new ArrayList<>();
         artistsByName.forEach(artist -> songsByArtistName.addAll(artist.getSongs()));
 
-        // Gộp, bỏ trùng
         Set<Song> uniqueSongs = new HashSet<>();
         uniqueSongs.addAll(songsByTitle);
         uniqueSongs.addAll(songsByArtistName);
@@ -100,11 +98,21 @@ public class SearchService {
                 .map(songMapper::toSongResponse)
                 .toList();
 
-        // Albums
-        List<AlbumResponse> albums = albumRepository.findDistinctBySongs_TitleContainingIgnoreCase(keyword)
-                .stream().map(albumMapper::toAlbumResponse).toList();
+        // --- 2. Albums ---
+        List<Album> albumsByName = albumRepository.findByTitleContainingIgnoreCase(keyword);
+        List<Album> albumsByArtist = albumRepository.findByArtist_NameContainingIgnoreCase(keyword);
+        List<Album> albumsBySongTitle = albumRepository.findDistinctBySongs_TitleContainingIgnoreCase(keyword);
 
-        // Nghệ sĩ (gộp nghệ sĩ theo tên & nghệ sĩ theo bài hát)
+        Set<Album> uniqueAlbums = new HashSet<>();
+        uniqueAlbums.addAll(albumsByName);
+        uniqueAlbums.addAll(albumsByArtist);
+        uniqueAlbums.addAll(albumsBySongTitle);
+
+        List<AlbumResponse> albums = uniqueAlbums.stream()
+                .map(albumMapper::toAlbumResponse)
+                .toList();
+
+        // --- 3. Artists ---
         List<Artist> artistsBySong = artistRepository.findDistinctBySongs_TitleContainingIgnoreCase(keyword);
         Set<Artist> uniqueArtists = new HashSet<>();
         uniqueArtists.addAll(artistsByName);

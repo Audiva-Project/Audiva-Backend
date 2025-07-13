@@ -20,5 +20,12 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     List<Album> findByArtist_NameContainingIgnoreCase(String artistName);
 
     List<Album> findDistinctBySongs_TitleContainingIgnoreCase(String keyword);
+
+    @Query("""
+              SELECT a FROM Album a 
+              JOIN a.artist ar 
+              WHERE LOWER(ar.name) LIKE LOWER(CONCAT('%', :artistName, '%'))
+            """)
+    List<Album> searchAlbumsByArtistName(@Param("artistName") String artistName);
 }
 
