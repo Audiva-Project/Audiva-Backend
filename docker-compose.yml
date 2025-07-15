@@ -6,7 +6,7 @@ services:
     container_name: db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Huytk123@
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: audiva
     ports:
       - "3306:3306"
@@ -24,7 +24,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/audiva
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Huytk123@
+      SPRING_DATASOURCE_PASSWORD: root
     volumes:
       - ./uploads:/app/uploads
 

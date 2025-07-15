@@ -8,9 +8,9 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://db:3306/audiva"
+    url: "jdbc:mysql://localhost:3306/audiva"
     username: root
-    password: Huytk123@
+    password: root
   jpa:
     hibernate:
       ddl-auto: update

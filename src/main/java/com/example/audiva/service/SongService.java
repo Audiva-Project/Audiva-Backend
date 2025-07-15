@@ -169,9 +169,9 @@ public class SongService {
         return songs.map(songMapper::toSongResponse);
     }
 
-    public void increasePlayCount (Long songId) {
+    public void increasePlayCount(Long songId) {
         Song song = songRepository.findById(songId)
-                .orElseThrow(()-> new AppException(ErrorCode.SONG_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.SONG_NOT_FOUND));
 
         if (song.getPlayCount() == null) {
             song.setPlayCount(1L);
@@ -205,4 +205,8 @@ public class SongService {
         return lyrics;
     }
 
+    public Page<SongResponse> getSongsByArtistId(Long artistId, Pageable pageable) {
+        return songRepository.findByArtists_Id(artistId, pageable)
+                .map(songMapper::toSongResponse);
+    }
 }
