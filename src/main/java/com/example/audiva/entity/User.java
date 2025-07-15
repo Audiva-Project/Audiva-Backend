@@ -35,5 +35,11 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     Set<Playlist> playlists;
+
+    @Column(name = "download_count")
+    private Integer downloadCount;
+
+    @Column(name = "last_download_reset_date")
+    private LocalDate lastDownloadResetDate;
 }
 
