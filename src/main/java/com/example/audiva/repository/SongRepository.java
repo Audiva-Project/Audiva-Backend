@@ -27,6 +27,5 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> findByAlbum_TitleContainingIgnoreCase(String albumTitle);
 
     // DESC BY playCount
-    @Query("SELECT s FROM Song s ORDER BY s.playCount DESC")
-    Page<Song> findByArtists_Id(Long artistId, Pageable pageable);
+    Page<Song> findByArtists_IdOrderByPlayCountDesc(Long artistId, Pageable pageable);
 }

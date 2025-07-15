@@ -206,7 +206,7 @@ public class SongService {
     }
 
     public Page<SongResponse> getSongsByArtistId(Long artistId, Pageable pageable) {
-        return songRepository.findByArtists_Id(artistId, pageable)
+        return songRepository.findByArtists_IdOrderByPlayCountDesc(artistId, pageable)
                 .map(songMapper::toSongResponse);
     }
 }
