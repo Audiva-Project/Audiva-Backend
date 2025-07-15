@@ -82,13 +82,36 @@ public class UserService {
 
 
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("User not found")
-        );
-        userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Cập nhật từng trường nếu có
+        if (request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName());
+        }
+
+        if (request.getLastName() != null) {
+            user.setLastName(request.getLastName());
+        }
+
+        if (request.getDob() != null) {
+            user.setDob(request.getDob());
+        }
+
+        // Mật khẩu
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        // Roles: nếu không cung cấp thì gán USER mặc định
+        if (request.getRoles() != null && !request.getRoles().isEmpty()) {
+            var roles = roleRepository.findAllById(request.getRoles());
+            user.setRoles(new HashSet<>(roles));
+        } else {
+            var defaultRole = roleRepository.findAllById(List.of("USER")); // hoặc Role.USER.name()
+            user.setRoles(new HashSet<>(defaultRole));
+        }
+
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
