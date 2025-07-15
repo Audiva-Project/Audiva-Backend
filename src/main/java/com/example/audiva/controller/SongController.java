@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
@@ -79,11 +82,14 @@ public class SongController {
     public ResponseEntity<Resource> downloadSong(
             @PathVariable Long id,
             @RequestParam(defaultValue = "128kbps") String quality) {
+
+        // 1) Lấy song entity
         Song song = songService.getSongEntityById(id);
         if (song == null) {
             return ResponseEntity.notFound().build();
         }
 
+        // 2) Xác thực user
         Authentication curUser = SecurityContextHolder.getContext().getAuthentication();
         String username = curUser.getName();
 
@@ -91,32 +97,43 @@ public class SongController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean isPremium = userService.isPremium(user);
-        int quota = isPremium ? 20 : 2;
+        int quota = isPremium ? 100 : 50;
 
-        // Bỏ reset thủ công => chỉ check quota
         if (user.getDownloadCount() != null && user.getDownloadCount() >= quota) {
-            return ResponseEntity.status(403).body(null);
+            return ResponseEntity.status(403).build();
         }
 
-        // Tăng count (đã tự reset bên trong service)
         userService.increaseDownloadCount(user);
 
-        String audioStoragePath = Paths.get("uploads", "mp3", quality).toAbsolutePath().toString();
-        String filePath = Paths.get(audioStoragePath, song.getAudioUrl()).toString();
-        File file = new File(filePath);
-        if (!file.exists()) {
+        // 3) Tính tên file theo bitrate
+        String filename = song.getAudioUrl();
+        String finalFilename = "128kbps".equals(quality) ? filename : quality + "_" + filename;
+
+        // 4) Build đường dẫn tuyệt đối
+        Path filePath = Paths.get(System.getProperty("user.dir"), "uploads", "mp3", finalFilename).normalize();
+
+        if (!Files.exists(filePath)) {
             return ResponseEntity.notFound().build();
         }
 
-        FileSystemResource resource = new FileSystemResource(file);
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + file.getName() + "\"")
-                .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .contentLength(Files.size(filePath))
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)  // Hoặc trả về chuẩn audio/mpeg nếu chắc chắn là mp3
+                    .body(resource);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteSong(@PathVariable Long id) {
