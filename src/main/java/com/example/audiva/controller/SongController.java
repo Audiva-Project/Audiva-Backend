@@ -1,12 +1,14 @@
 package com.example.audiva.controller;
 
-
 import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.SongRequest;
 import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.Song;
+import com.example.audiva.entity.User;
 import com.example.audiva.mapper.SongMapper;
+import com.example.audiva.repository.UserRepository;
 import com.example.audiva.service.SongService;
+import com.example.audiva.service.UserService;
 import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -31,6 +35,12 @@ public class SongController {
 
     @Autowired
     private SongMapper songMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public Page<SongResponse> getAllSongs(
@@ -63,14 +73,33 @@ public class SongController {
     }
 
     @GetMapping("/{id}/download")
-    public ResponseEntity<Resource> downloadSong(@PathVariable Long id) {
+    public ResponseEntity<Resource> downloadSong(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "128kbps") String quality) {
         Song song = songService.getSongEntityById(id);
         if (song == null) {
             return ResponseEntity.notFound().build();
         }
 
-        String audioStoragePath = Paths.get("uploads/mp3").toAbsolutePath().toString() + File.separator;
-        String filePath = audioStoragePath + song.getAudioUrl();
+        Authentication curUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = curUser.getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean isPremium = userService.isPremium(user);
+        int quota = isPremium ? 20 : 2;
+
+        // Bỏ reset thủ công => chỉ check quota
+        if (user.getDownloadCount() != null && user.getDownloadCount() >= quota) {
+            return ResponseEntity.status(403).body(null);
+        }
+
+        // Tăng count (đã tự reset bên trong service)
+        userService.increaseDownloadCount(user);
+
+        String audioStoragePath = Paths.get("uploads", "mp3", quality).toAbsolutePath().toString();
+        String filePath = Paths.get(audioStoragePath, song.getAudioUrl()).toString();
         File file = new File(filePath);
         if (!file.exists()) {
             return ResponseEntity.notFound().build();

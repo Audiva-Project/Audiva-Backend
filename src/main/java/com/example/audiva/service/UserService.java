@@ -23,8 +23,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -114,4 +117,35 @@ public class UserService {
             playListRepository.save(favoriteList);
         }
     }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public boolean isPremium(User user) {
+        LocalDateTime now = LocalDateTime.now();
+        return user.getPremiumSubscriptions() != null &&
+                user.getPremiumSubscriptions().stream()
+                        .anyMatch(p -> p.getStatus() == PaymentStatus.SUCCESS
+                                && p.getStartDate().isBefore(now)
+                                && p.getEndDate().isAfter(now));
+    }
+
+    public void increaseDownloadCount(User user) {
+        LocalDate today = LocalDate.now();
+
+        // Reset nếu sang ngày mới
+        if (user.getLastDownloadResetDate() == null || !user.getLastDownloadResetDate().equals(today)) {
+            user.setDownloadCount(0);
+            user.setLastDownloadResetDate(today);
+        }
+
+        if (user.getDownloadCount() == null) {
+            user.setDownloadCount(0);
+        }
+
+        user.setDownloadCount(user.getDownloadCount() + 1);
+        userRepository.save(user);
+    }
+
 }
