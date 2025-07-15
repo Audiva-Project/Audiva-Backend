@@ -29,9 +29,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/songs")
@@ -174,6 +171,16 @@ public class SongController {
 
         return ApiResponse.<String>builder()
                 .result("Lyrics updated successfully")
+                .build();
+    }
+
+    // fetch songs by artist id
+    @GetMapping("/artist/{artistId}")
+    public ApiResponse<Page<SongResponse>> getSongsByArtistId(
+            @PathVariable Long artistId,
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ApiResponse.<Page<SongResponse>>builder()
+                .result(songService.getSongsByArtistId(artistId, pageable))
                 .build();
     }
 

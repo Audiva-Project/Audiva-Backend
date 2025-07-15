@@ -6,7 +6,7 @@ services:
     container_name: db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Huytk123@
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: audiva
     ports:
       - "3306:3306"

@@ -25,4 +25,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> findByArtists_NameContainingIgnoreCase(String artistName);
 
     List<Song> findByAlbum_TitleContainingIgnoreCase(String albumTitle);
+
+    // DESC BY playCount
+    @Query("SELECT s FROM Song s ORDER BY s.playCount DESC")
+    Page<Song> findByArtists_Id(Long artistId, Pageable pageable);
 }
