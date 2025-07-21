@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /identity
+    context-path: /api/v1
   multipart:
     max-file-size: 50MB
     max-request-size: 100MB
@@ -35,3 +35,8 @@ vnpay:
   hash-secret: SLM2ZXMO9LNC6JTSC3RI4XHYW6K1JEAU
   vnp-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   vnp-return-url: http://localhost:8080/identity/api/premium/payment-return
+
+cloudinary:
+  cloud-name: ddoesja29
+  api-key: 732799776966928
+  api-secret: H8KJSz7Dg-Z2TUo4riGiyhbMdNE

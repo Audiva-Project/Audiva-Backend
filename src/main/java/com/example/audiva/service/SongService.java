@@ -34,11 +34,10 @@ public class SongService {
 
     SongRepository songRepository;
     SongMapper songMapper;
-    StorageService storageService;
     ArtistRepository artistRepository;
-    PremiumService premiumService;
     AlbumRepository albumRepository;
     LyricsRepository lyricsRepository;
+    UploadService uploadService;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
         Page<Song> songs = songRepository.findAll(pageable);
@@ -56,8 +55,8 @@ public class SongService {
         if (song.getGenre() == null) {
             song.setGenre(Genre.OTHER);
         }
-        song.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
-        song.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+        song.setAudioUrl(uploadService.uploadFile(request.getAudioFile()));
+        song.setThumbnailUrl(uploadService.uploadFile(request.getThumbnailFile()));
 
         if (request.getIsPremium() != null) {
             song.setPremium(Boolean.parseBoolean(request.getIsPremium()));
@@ -98,7 +97,7 @@ public class SongService {
 
         if (request.getAudioFile() != null) {
             try {
-                existSong.setAudioUrl(storageService.uploadFile(request.getAudioFile()));
+                existSong.setAudioUrl(uploadService.uploadFile(request.getAudioFile()));
             } catch (IOException e) {
                 throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
             }
@@ -106,7 +105,7 @@ public class SongService {
 
         if (request.getThumbnailFile() != null) {
             try {
-                existSong.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+                existSong.setThumbnailUrl(uploadService.uploadFile(request.getThumbnailFile()));
             } catch (IOException e) {
                 throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
             }

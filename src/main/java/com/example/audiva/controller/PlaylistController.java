@@ -7,7 +7,6 @@ import com.example.audiva.dto.response.SongResponse;
 import com.example.audiva.entity.User;
 import com.example.audiva.repository.UserRepository;
 import com.example.audiva.service.PlaylistService;
-import com.example.audiva.service.StorageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,11 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/playlists")
+@RequestMapping("/playlists")
 @RequiredArgsConstructor
 public class PlaylistController {
     @Autowired
     PlaylistService playlistService;
-
-    @Autowired
-    StorageService fileStorageService;
 
     @Autowired
     UserRepository userRepository;
@@ -47,20 +43,18 @@ public class PlaylistController {
             @PathVariable Long playlistId,
             @PathVariable Long songId
     ) {
-        Authentication authentication = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Gọi service
         PlaylistResponse playlistResponse = playlistService.addSongToPlaylist(
                 playlistId,
                 songId,
-                user.getId() // Lấy UUID từ entity User
+                user.getId()
         );
 
-        // Trả về kết quả
         return ApiResponse.<PlaylistResponse>builder()
                 .result(playlistResponse)
                 .code(0)
@@ -89,7 +83,7 @@ public class PlaylistController {
             @PathVariable Long playlistId,
             @PathVariable Long songId
     ) {
-        Authentication authentication = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         User user = userRepository.findByUsername(username)
@@ -122,14 +116,4 @@ public class PlaylistController {
                 .message("Delete playlist success")
                 .build();
     }
-
-
-//    // 👉 Endpoint test: thêm bài hát ID 1 vào playlist ID 1
-//    @GetMapping("/test-add")
-//    public PlaylistResponse testAdd() {
-//        Long playlistId = 1L; // giả sử playlist ID 1
-//        Long songId = 1L;     // giả sử song ID 1
-//        return playlistService.addSongToPlaylist(playlistId, n);
-//    }
-
 }

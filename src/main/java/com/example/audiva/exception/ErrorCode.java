@@ -47,7 +47,12 @@ public enum ErrorCode {
 
     // NOTIFICATIONS Error code
     NOTIFICATIONS_NOT_FOUND(1023, "Notifications not found", HttpStatus.NOT_FOUND),
-    NOTIFICATION_NOT_FOUND(1024, "Notification not found", HttpStatus.NOT_FOUND);
+    NOTIFICATION_NOT_FOUND(1024, "Notification not found", HttpStatus.NOT_FOUND),
+
+    // UPLOAD Error code
+    UPLOAD_FAILED(1025, "File upload failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    FILE_NOT_FOUND(1026, "File not found", HttpStatus.NOT_FOUND),
+    INVALID_FILE_TYPE(1027, "Invalid file type", HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/albums")
+@RequestMapping("/albums")
 @RequiredArgsConstructor
 public class AlbumController {
 
@@ -50,7 +50,7 @@ public class AlbumController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<AlbumResponse> updateAlbum(@PathVariable Long id,
-                                                  @Valid @ModelAttribute  AlbumRequest request) {
+                                                  @Valid @ModelAttribute AlbumRequest request) {
         return ApiResponse.<AlbumResponse>builder()
                 .result(albumService.updateAlbum(id, request))
                 .build();

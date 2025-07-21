@@ -23,7 +23,7 @@ public class ArtistService {
 
     ArtistRepository artistRepository;
     ArtistMapper artistMapper;
-    StorageService storageService;
+    UploadService uploadService;
 
     public List<ArtistResponse> findAllArtists() {
         return artistRepository.findAll()
@@ -48,7 +48,7 @@ public class ArtistService {
 
         Artist artist = artistMapper.toArtist(request);
         if (file != null && !file.isEmpty()) {
-            artist.setAvatar(storageService.uploadFile(file));
+            artist.setAvatar(uploadService.uploadFile(file));
         } else {
             artist.setAvatar(null);
         }
@@ -64,7 +64,7 @@ public class ArtistService {
         artistMapper.updateArtistFromRequest(request, artist);
 
         if (file != null && !file.isEmpty()) {
-            artist.setAvatar(storageService.uploadFile(file));
+            artist.setAvatar(uploadService.uploadFile(file));
         } else {
             artist.setAvatar(null);
         }

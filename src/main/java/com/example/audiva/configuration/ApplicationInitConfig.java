@@ -1,7 +1,5 @@
 package com.example.audiva.configuration;
 
-import com.example.audiva.entity.Role;
-import com.example.audiva.entity.User;
 import com.example.audiva.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +9,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor

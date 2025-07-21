@@ -8,15 +8,12 @@ import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.AlbumMapper;
 import com.example.audiva.repository.AlbumRepository;
-import com.example.audiva.repository.ArtistRepository;
 import com.example.audiva.repository.SongRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.beans.Transient;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,8 +23,7 @@ import java.util.List;
 public class AlbumService {
 
     AlbumRepository albumRepository;
-    ArtistRepository artistRepository;
-    StorageService storageService;
+    UploadService uploadService;
     AlbumMapper albumMapper;
     SongRepository songRepository;
 
@@ -48,7 +44,7 @@ public class AlbumService {
         Album album = albumMapper.toAlbum(request);
 
         if (request.getThumbnailFile() != null && !request.getThumbnailFile().isEmpty()) {
-            album.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+            album.setThumbnailUrl(uploadService.uploadFile(request.getThumbnailFile()));
         }
 
         Album savedAlbum = albumRepository.save(album);
@@ -82,7 +78,7 @@ public class AlbumService {
 
         if (request.getThumbnailFile() != null && !request.getThumbnailFile().isEmpty()) {
             try {
-                existAlbum.setThumbnailUrl(storageService.uploadFile(request.getThumbnailFile()));
+                existAlbum.setThumbnailUrl(uploadService.uploadFile(request.getThumbnailFile()));
             } catch (IOException e) {
                 throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
             }

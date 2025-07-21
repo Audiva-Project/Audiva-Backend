@@ -1,30 +1,25 @@
 package com.example.audiva.controller;
 
-import com.example.audiva.service.StorageService;
+import com.example.audiva.service.UploadService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/audio")
 public class AudioController {
 
-    private final StorageService storageService;
+    private final UploadService uploadService;
 
     // 1. Upload file MP3
     @PostMapping("/upload")
     public ResponseEntity<String> uploadAudio(@RequestParam("file") MultipartFile file) {
         try {
-            String savedFilename = storageService.uploadFile(file);
+            String savedFilename = uploadService.uploadFile(file);
             return ResponseEntity.ok("File uploaded as: " + savedFilename);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -32,40 +27,14 @@ public class AudioController {
         }
     }
 
+    // 2. Get file URL by filename
     @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+    public ResponseEntity<String> getFile(@PathVariable String filename) {
         try {
-            Path file = storageService.loadByFilename(filename);
-            Resource resource = new UrlResource(file.toUri());
-
-            Path path = storageService.loadByFilename(filename);
-            System.out.println("Absolute path: " + path.toAbsolutePath());
-            System.out.println("Exists: " + Files.exists(path));
-            System.out.println("Readable: " + Files.isReadable(path));
-            System.out.println("URL: " + path.toUri());
-
-            UrlResource res = new UrlResource(path.toUri());
-            System.out.println("UrlResource exists: " + res.exists());
-            System.out.println("UrlResource readable: " + res.isReadable());
-
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            MediaType mediaType = storageService.getMediaType(filename);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(mediaType);
-            headers.setContentDisposition(ContentDisposition.inline().filename(filename).build());
-
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(resource);
-
-        } catch (MalformedURLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            String fileUrl = uploadService.getFileUrl(filename);
+            return ResponseEntity.ok(fileUrl);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 

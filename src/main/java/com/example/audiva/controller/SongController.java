@@ -12,7 +12,6 @@ import com.example.audiva.service.UserService;
 import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,20 +23,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("api/songs")
+@RequestMapping("/songs")
 public class SongController {
     @Autowired
     private SongService songService;
-
-    @Autowired
-    private SongMapper songMapper;
 
     @Autowired
     private UserService userService;
@@ -94,7 +89,7 @@ public class SongController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean isPremium = userService.isPremium(user);
-        int quota = isPremium ? 100 : 50;
+        int quota = isPremium ? 3 : 2;
 
         if (user.getDownloadCount() != null && user.getDownloadCount() >= quota) {
             return ResponseEntity.status(403).build();

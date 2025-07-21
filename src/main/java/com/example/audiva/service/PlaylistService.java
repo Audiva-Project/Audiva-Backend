@@ -34,7 +34,7 @@ public class PlaylistService {
     SongRepository songRepository;
     PlaylistMapper playlistMapper;
     UserRepository userRepository;
-    StorageService storageService;
+    UploadService uploadService;
     SongMapper songMapper; // Inject SongMapper
 
     public PlaylistResponse createPlaylist(PlaylistRequest request) {
@@ -45,7 +45,7 @@ public class PlaylistService {
         String fileUrl;
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             try {
-                fileUrl = storageService.uploadFile(thumbnailFile);
+                fileUrl = uploadService.uploadFile(thumbnailFile);
             } catch (IOException e) {
                 // Nên có logging ở đây
                 throw new RuntimeException("Failed to upload thumbnail", e);
@@ -149,7 +149,7 @@ public class PlaylistService {
         MultipartFile thumbnailFile = request.getThumbnailUrl();
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             try {
-                String fileUrl = storageService.uploadFile(thumbnailFile);
+                String fileUrl = uploadService.uploadFile(thumbnailFile);
                 playlist.setThumbnailUrl(fileUrl);
             } catch (IOException e) {
                 // Nên có logging ở đây

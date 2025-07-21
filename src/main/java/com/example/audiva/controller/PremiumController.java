@@ -2,14 +2,12 @@ package com.example.audiva.controller;
 
 import com.example.audiva.dto.request.ApiResponse;
 import com.example.audiva.dto.request.PremiumRequest;
-import com.example.audiva.entity.Premium;
 import com.example.audiva.service.PremiumService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -19,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/premium")
+@RequestMapping("/premiums")
 public class PremiumController {
 
     PremiumService premiumService;

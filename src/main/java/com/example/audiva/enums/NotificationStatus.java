@@ -1,5 +1,8 @@
 package com.example.audiva.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum NotificationStatus {
     UNREAD("UNREAD"),
     READ("READ"),
@@ -9,9 +12,5 @@ public enum NotificationStatus {
 
     NotificationStatus(String status) {
         this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
     }
 }

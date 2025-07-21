@@ -1,7 +1,6 @@
 package com.example.audiva.controller;
 
 import com.example.audiva.dto.response.UserPremiumResponse;
-import com.example.audiva.entity.UserPremium;
 import com.example.audiva.service.UserPremiumService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
