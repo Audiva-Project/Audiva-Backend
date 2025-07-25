@@ -1,32 +1,39 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: db
+  mysql-8.0.41:
+    image: mysql:8.0.41
+    container_name: mysql-8.0.41
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: audiva
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+    networks:
+      - audiva-net
 
-  backend:
+  audiva:
     build:
       context: .
-    container_name: audiva-backend
+      dockerfile: Dockerfile
+    container_name: audiva
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - mysql-8.0.41
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/audiva
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Huytk123@
-    volumes:
-      - ./uploads:/app/uploads
+      DBMS_CONNECTION: jdbc:mysql://mysql-8.0.41:3306/audiva
+      DBMS_USERNAME: root
+      DBMS_PASSWORD: root
+    networks:
+      - audiva-net
 
 volumes:
-  db_data:
+  mysql-data:
+
+networks:
+  audiva-net:

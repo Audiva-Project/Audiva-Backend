@@ -13,12 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/test")
+@RequestMapping("/upload")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UploadController {
     UploadService uploadService;
 
-    @PostMapping("/upload")
+    @PostMapping()
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String url = uploadService.uploadFile(file);

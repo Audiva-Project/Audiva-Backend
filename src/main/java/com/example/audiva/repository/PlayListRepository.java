@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public interface PlayListRepository extends JpaRepository<Playlist, Long> {
     List<Playlist> findAllByUserId(String userId);
+
     Optional<Playlist> findByIdAndUserId(Long playlistId, String userId);
+
     boolean existsByUserIdAndName(String userId, String name);
+
+    Optional<Playlist> findById(Long id);
 }

@@ -2,8 +2,7 @@ package com.example.audiva.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,8 +10,11 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "playlist")
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Playlist extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +33,6 @@ public class Playlist extends BaseEntity {
 
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore

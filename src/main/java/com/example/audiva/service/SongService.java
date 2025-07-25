@@ -9,10 +9,7 @@ import com.example.audiva.enums.Genre;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.SongMapper;
-import com.example.audiva.repository.AlbumRepository;
-import com.example.audiva.repository.ArtistRepository;
-import com.example.audiva.repository.LyricsRepository;
-import com.example.audiva.repository.SongRepository;
+import com.example.audiva.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +35,8 @@ public class SongService {
     AlbumRepository albumRepository;
     LyricsRepository lyricsRepository;
     UploadService uploadService;
+    PlaylistSongRepository playlistSongRepository;
+    ListeningHistoryRepository listeningHistoryRepository;
 
     public Page<SongResponse> getAllSong(Pageable pageable) {
         Page<Song> songs = songRepository.findAll(pageable);
@@ -92,9 +91,6 @@ public class SongService {
             existSong.setGenre(Genre.OTHER);
         }
 
-        // check premium user
-
-
         if (request.getAudioFile() != null) {
             try {
                 existSong.setAudioUrl(uploadService.uploadFile(request.getAudioFile()));
@@ -123,12 +119,10 @@ public class SongService {
             boolean isPremium = Boolean.parseBoolean(request.getIsPremium());
             existSong.setPremium(isPremium);
         }
-        // change album association if albumId is provided
+
         if (request.getAlbumId() != null) {
             existSong.setAlbum(albumRepository.getAlbumById(request.getAlbumId())
                     .orElseThrow(() -> new AppException(ErrorCode.ALBUM_NOT_FOUND)));
-        } else {
-            existSong.setAlbum(null);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -145,8 +139,27 @@ public class SongService {
 
     }
 
-    public void deleteSong(Long id) {
-        songRepository.deleteById(id);
+    @Transactional
+    public void deleteSongById(Long songId) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new RuntimeException("Song not found with id: " + songId));
+
+        // Xóa lời bài hát nếu có
+        if (song.getLyrics() != null) {
+            lyricsRepository.delete(song.getLyrics());
+        }
+
+        // Xóa các liên kết trong PlaylistSong
+        playlistSongRepository.deleteAllBySong(song);
+
+        // Xóa lịch sử nghe bài hát
+        listeningHistoryRepository.deleteAllBySong(song);
+
+        // Xóa liên kết artist nếu cần (không bắt buộc xóa artist)
+        song.getArtists().clear();
+
+        // Sau khi xóa liên kết -> xóa song
+        songRepository.delete(song);
     }
 
     public Song getSongEntityById(Long id) {

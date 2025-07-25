@@ -7,7 +7,7 @@ import com.example.audiva.entity.*;
 import com.example.audiva.exception.AppException;
 import com.example.audiva.exception.ErrorCode;
 import com.example.audiva.mapper.PlaylistMapper;
-import com.example.audiva.mapper.SongMapper; // Import SongMapper
+import com.example.audiva.mapper.SongMapper;
 import com.example.audiva.repository.PlayListRepository;
 import com.example.audiva.repository.PlaylistSongRepository;
 import com.example.audiva.repository.SongRepository;
@@ -35,31 +35,30 @@ public class PlaylistService {
     PlaylistMapper playlistMapper;
     UserRepository userRepository;
     UploadService uploadService;
-    SongMapper songMapper; // Inject SongMapper
+    SongMapper songMapper;
 
     public PlaylistResponse createPlaylist(PlaylistRequest request) {
         User user = getCurrentUser();
 
-        MultipartFile thumbnailFile = request.getThumbnailUrl();
+        MultipartFile thumbnailFile = request.getThumbnailFile();
 
         String fileUrl;
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             try {
                 fileUrl = uploadService.uploadFile(thumbnailFile);
             } catch (IOException e) {
-                // Nên có logging ở đây
-                throw new RuntimeException("Failed to upload thumbnail", e);
+                throw new AppException(ErrorCode.FILE_NOT_FOUND);
             }
         } else {
-            fileUrl = "1751428697154_playlist.jpg"; // Giá trị mặc định
+            fileUrl = "https://res.cloudinary.com/ddoesja29/image/upload/v1753263070/audiva/img/1751428697154playlist.jpg";
         }
 
-        Playlist playlist = new Playlist();
-        playlist.setName(request.getName());
-        playlist.setDescription(request.getDescription());
-        playlist.setThumbnailUrl(fileUrl);
-        playlist.setUser(user);
-        // playlist.setCreatedAt(LocalDateTime.now()); // JPA @CreatedDate sẽ tự động quản lý
+        Playlist playlist = Playlist.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .thumbnailUrl(fileUrl)
+                .user(user)
+                .build();
 
         Playlist saved = playlistRepository.save(playlist);
         return playlistMapper.toPlaylistResponse(saved);
@@ -73,8 +72,6 @@ public class PlaylistService {
 
     public List<PlaylistResponse> getMyPlaylists() {
         User currentUser = getCurrentUser();
-        // findAllByUserId có thể cần kiểu Long cho userId nếu ID là Long
-        // Kiểm tra lại User entity và repository để khớp kiểu dữ liệu
         return playlistRepository.findAllByUserId(currentUser.getId())
                 .stream()
                 .map(playlistMapper::toPlaylistResponse)
@@ -82,15 +79,8 @@ public class PlaylistService {
     }
 
     public List<SongResponse> getSongsInPlaylist(Long playlistId) {
-        User user = getCurrentUser();
-
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_PLAYLIST));
-
-        // Kiểm tra quyền sở hữu playlist
-        if (!playlist.getUser().getId().equals(user.getId())) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
-        }
 
         return playlist.getPlaylistSongs().stream()
                 .sorted(Comparator.comparingInt(PlaylistSong::getOrderInPlaylist))
@@ -129,14 +119,12 @@ public class PlaylistService {
     }
 
     public PlaylistResponse updatePlaylist(Long playlistId, PlaylistRequest request) {
-        User user = getCurrentUser();
-
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_PLAYLIST));
 
-        if (!playlist.getUser().getId().equals(user.getId())) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
-        }
+//        if (!playlist.getCreatedBy().equals(user.getId())) {
+//            throw new AppException(ErrorCode.UNAUTHORIZED);
+//        }
 
         if (request.getName() != null && !request.getName().isEmpty()) {
             playlist.setName(request.getName());
@@ -146,7 +134,7 @@ public class PlaylistService {
             playlist.setDescription(request.getDescription());
         }
 
-        MultipartFile thumbnailFile = request.getThumbnailUrl();
+        MultipartFile thumbnailFile = request.getThumbnailFile();
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             try {
                 String fileUrl = uploadService.uploadFile(thumbnailFile);

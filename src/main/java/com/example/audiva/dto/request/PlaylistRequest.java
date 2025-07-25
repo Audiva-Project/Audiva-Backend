@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class PlaylistRequest {
     private String name;
     private String description;
-    private MultipartFile thumbnailUrl;
+    private MultipartFile thumbnailFile;
 }

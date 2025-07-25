@@ -145,8 +145,14 @@ public class PremiumService {
         if (request.getPrice() <= 0) {
             throw new AppException(ErrorCode.INVALID_PREMIUM_PRICE);
         }
+        
+        if (request.getName() != null) {
+            existedPremium.setName(request.getName());
+        }
 
-        premiumMapper.updatePremiumFromRequest(request, existedPremium);
+        if (request.getDuration() != null) {
+            existedPremium.setDuration(request.getDuration());
+        }
 
         SecurityContext context = SecurityContextHolder.getContext();
 

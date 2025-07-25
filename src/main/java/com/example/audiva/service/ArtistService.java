@@ -55,18 +55,19 @@ public class ArtistService {
         return artistMapper.toArtistResponse(artistRepository.save(artist));
     }
 
-    public ArtistResponse updateArtist(Long id, ArtistRequest request, MultipartFile file) throws IOException {
+    public ArtistResponse updateArtist(Long id, ArtistRequest request) throws IOException {
         Artist artist = artistRepository.findArtistById(id);
         if (artistRepository.existsByName(request.getName()) &&
                 !artist.getName().equalsIgnoreCase(request.getName())) {
             throw new AppException(ErrorCode.ARTIST_EXISTED);
         }
-        artistMapper.updateArtistFromRequest(request, artist);
 
-        if (file != null && !file.isEmpty()) {
-            artist.setAvatar(uploadService.uploadFile(file));
-        } else {
-            artist.setAvatar(null);
+        if (request.getName() != null) {
+            artist.setName(request.getName());
+        }
+
+        if (request.getFile() != null) {
+            artist.setAvatar(uploadService.uploadFile(request.getFile()));
         }
         return artistMapper.toArtistResponse(artistRepository.save(artist));
     }

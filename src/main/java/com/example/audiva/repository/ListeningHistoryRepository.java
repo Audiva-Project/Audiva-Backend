@@ -1,6 +1,7 @@
 package com.example.audiva.repository;
 
 import com.example.audiva.entity.ListeningHistory;
+import com.example.audiva.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,6 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
 
     @Query("SELECT lh FROM ListeningHistory lh WHERE lh.anonymousId = :anonymousId AND lh.song.id = :songId")
     Optional<ListeningHistory> findByAnonymousIdAndSongId(String anonymousId, Long songId);
+
+    void deleteAllBySong(Song song);
 }

@@ -42,7 +42,7 @@ public class SongController {
 
     @GetMapping
     public Page<SongResponse> getAllSongs(
-            @PageableDefault(size = 8, page = 0) Pageable pageable
+            @PageableDefault(size = 50, page = 0) Pageable pageable
     ) {
         return songService.getAllSong(pageable);
     }
@@ -129,7 +129,7 @@ public class SongController {
 
     @DeleteMapping("/{id}")
     public void deleteSong(@PathVariable Long id) {
-        songService.deleteSong(id);
+        songService.deleteSongById(id);
     }
 
     // get all songs create by me

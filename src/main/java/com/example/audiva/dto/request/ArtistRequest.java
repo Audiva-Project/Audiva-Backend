@@ -1,9 +1,9 @@
 package com.example.audiva.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -11,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArtistRequest {
-    @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name must be at most 100 characters")
-    String name;
+    @Size(max = 100)
+    private String name;
+
+    private MultipartFile file;
 }

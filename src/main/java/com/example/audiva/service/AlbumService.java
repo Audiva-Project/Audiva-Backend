@@ -13,8 +13,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -74,7 +76,17 @@ public class AlbumService {
         Album existAlbum = albumRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ALBUM_NOT_FOUND));
 
-        albumMapper.updateAlbumFromRequest(request, existAlbum);
+        if (request.getTitle() != null) {
+            existAlbum.setTitle(request.getTitle());
+        }
+
+        if (request.getSongIds() != null) {
+            existAlbum.setSongs(songRepository.findAllById(request.getSongIds()));
+        }
+
+        if (request.getReleaseDate() != null) {
+            existAlbum.setReleaseDate(request.getReleaseDate());
+        }
 
         if (request.getThumbnailFile() != null && !request.getThumbnailFile().isEmpty()) {
             try {

@@ -39,8 +39,8 @@ public class ArtistController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ArtistResponse updateArtist(@PathVariable Long id, @Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
-        return artistService.updateArtist(id, request, file);
+    public ArtistResponse updateArtist(@PathVariable Long id, @ModelAttribute ArtistRequest request) throws IOException {
+        return artistService.updateArtist(id, request);
     }
 
     @DeleteMapping("/{id}")
