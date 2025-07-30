@@ -38,3 +38,5 @@ src/main/resources/application.yml
 ### Upload directories ###
 uploads/mp3/
 uploads/picture/
+
+.env

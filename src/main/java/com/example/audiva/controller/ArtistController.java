@@ -34,8 +34,8 @@ public class ArtistController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ArtistResponse createArtist(@Valid @ModelAttribute ArtistRequest request, @RequestParam("file") MultipartFile file) throws IOException {
-        return artistService.createArtist(request, file);
+    public ArtistResponse createArtist(@Valid @ModelAttribute ArtistRequest request) throws IOException {
+        return artistService.createArtist(request);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

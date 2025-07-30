@@ -8,10 +8,10 @@ server:
 
 spring:
   datasource:
-    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/audiva}
-    driverClassName: "com.mysql.cj.jdbc.Driver"
-    password: ${DBMS_PASSWORD:root}
-    username: ${DBMS_USERNAME:root}
+    url: ${DBMS_CONNECTION}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DBMS_USERNAME}
+    password: ${DBMS_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,17 +27,17 @@ spring:
       max-request-size: 100MB
 
 jwt:
-  signerKey: "1a92f26d86514e94c5991ca2afa01e6680d70b94518e8508541e1ea90f6106f9"
-  accessTokenExpiration: 900
-  refreshTokenExpiration: 604800
+  signerKey: ${JWT_SIGNER_KEY}
+  accessTokenExpiration: ${JWT_ACCESS_EXPIRATION}
+  refreshTokenExpiration: ${JWT_REFRESH_EXPIRATION}
 
 vnpay:
-  tmn-code: Z0K7KAKL
-  hash-secret: SLM2ZXMO9LNC6JTSC3RI4XHYW6K1JEAU
-  vnp-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  vnp-return-url: http://localhost:8080/identity/api/premium/payment-return
+  tmn-code: ${VNPAY_CODE}
+  hash-secret: ${VNPAY_SECRET}
+  vnp-url: ${VNPAY_URL}
+  vnp-return-url: ${VNPAY_RETURN_URL}
 
 cloudinary:
-  cloud-name: ddoesja29
-  api-key: 732799776966928
-  api-secret: H8KJSz7Dg-Z2TUo4riGiyhbMdNE
+  cloud-name: ${CLOUDINARY_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}

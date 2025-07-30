@@ -38,7 +38,7 @@ public class ArtistService {
         return artistMapper.toArtistResponse(curArtist);
     }
 
-    public ArtistResponse createArtist(ArtistRequest request, MultipartFile file) throws IOException {
+    public ArtistResponse createArtist(ArtistRequest request) throws IOException {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
             throw new AppException(ErrorCode.INVALID_ARTIST_NAME);
         }
@@ -47,8 +47,8 @@ public class ArtistService {
         }
 
         Artist artist = artistMapper.toArtist(request);
-        if (file != null && !file.isEmpty()) {
-            artist.setAvatar(uploadService.uploadFile(file));
+        if (request.getFile() != null) {
+            artist.setAvatar(uploadService.uploadFile(request.getFile()));
         } else {
             artist.setAvatar(null);
         }
